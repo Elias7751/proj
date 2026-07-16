@@ -1,0 +1,11 @@
+const express = require('express');
+const { getSettings, updateSettings } = require('./setting.controller');
+const { protect, authorize } = require('../../middleware/auth');
+
+const router = express.Router();
+
+router.route('/')
+    .get(getSettings)
+    .put(protect, authorize('admin'), updateSettings);
+
+module.exports = router;
