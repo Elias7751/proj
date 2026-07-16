@@ -45,6 +45,37 @@ app.get('/', (req, res) => {
   res.json({ message: 'مرحباً بك في منصة السوق اليمني API' });
 });
 
+// Temporary route to seed admin
+app.get('/api/v1/seed-admin', async (req, res) => {
+  try {
+    const User = require('./modules/users/user.model');
+    const bcrypt = require('bcryptjs');
+    const hashedPassword = await bcrypt.hash('password123', 10);
+
+    const existingAdmin = await User.findOne({ where: { phone: '777777777' } });
+    if (existingAdmin) {
+      await existingAdmin.update({
+        password: hashedPassword,
+        role: 'admin',
+        status: 'active'
+      });
+      return res.json({ message: 'Admin user updated successfully!' });
+    } else {
+      await User.create({
+        fullName: 'مدير النظام',
+        email: 'admin@admin.com',
+        password: hashedPassword,
+        phone: '777777777',
+        role: 'admin',
+        status: 'active'
+      });
+      return res.json({ message: 'Admin user created successfully!' });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 // Mount Routes
 app.use('/api/v1', routes);
 
