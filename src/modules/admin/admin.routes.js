@@ -16,7 +16,11 @@ const {
     getAdmins,
     createAdmin,
     updateAdmin,
-    deleteAdmin
+    deleteAdmin,
+    getAllAds,
+    createAdminAd,
+    updateAdminAd,
+    deleteAdminAd
 } = require('./admin.controller');
 const { protect, authorize } = require('../../middleware/auth');
 const { getAuditLogs } = require('../auditLogs/auditLog.controller');
@@ -72,5 +76,13 @@ router.route('/admins')
 router.route('/admins/:id')
     .put(updateAdmin)
     .delete(deleteAdmin);
+
+// مسارات الإعلانات والبنرات
+router.route('/ads')
+    .get(getAllAds)
+    .post(createAdminAd);
+router.route('/ads/:id')
+    .put(updateAdminAd)
+    .delete(deleteAdminAd);
 
 module.exports = router;

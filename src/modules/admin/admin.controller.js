@@ -402,3 +402,74 @@ exports.deleteAdmin = asyncHandler(async (req, res, next) => {
 
     res.status(200).json(new ApiResponse(200, null, 'تم حذف المشرف بنجاح'));
 });
+
+// ==========================================
+// إدارة الإعلانات والبنرات
+// ==========================================
+
+// @desc    جلب جميع الإعلانات
+// @route   GET /api/v1/admin/ads
+// @access  Private (Admin)
+exports.getAllAds = asyncHandler(async (req, res, next) => {
+    const Ad = require('../ads/ad.model');
+    const ads = await Ad.findAll({
+        include: [{ model: Store, as: 'store', attributes: ['nameAr', 'nameEn'] }],
+        order: [['createdAt', 'DESC']]
+    });
+    res.status(200).json(new ApiResponse(200, ads, 'تم جلب الإعلانات بنجاح'));
+});
+
+// @desc    إنشاء إعلان جديد (Admin)
+// @route   POST /api/v1/admin/ads
+// @access  Private (Admin)
+exports.createAdminAd = asyncHandler(async (req, res, next) => {
+    const Ad = require('../ads/ad.model');
+    const { title, image, link, placement, categoryId, startDate, endDate, storeId, cost } = req.body;
+
+    const ad = await Ad.create({
+        storeId,
+        title,
+        image,
+        link,
+        placement,
+        categoryId,
+        startDate,
+        endDate,
+        cost: cost || 0.00,
+        status: 'active'
+    });
+
+    res.status(201).json(new ApiResponse(201, ad, 'تم إنشاء الإعلان بنجاح'));
+});
+
+// @desc    تعديل إعلان
+// @route   PUT /api/v1/admin/ads/:id
+// @access  Private (Admin)
+exports.updateAdminAd = asyncHandler(async (req, res, next) => {
+    const Ad = require('../ads/ad.model');
+    const { id } = req.params;
+    const ad = await Ad.findByPk(id);
+
+    if (!ad) {
+        return next(new ApiError(404, 'الإعلان غير موجود'));
+    }
+
+    await ad.update(req.body);
+    res.status(200).json(new ApiResponse(200, ad, 'تم تحديث الإعلان بنجاح'));
+});
+
+// @desc    حذف إعلان
+// @route   DELETE /api/v1/admin/ads/:id
+// @access  Private (Admin)
+exports.deleteAdminAd = asyncHandler(async (req, res, next) => {
+    const Ad = require('../ads/ad.model');
+    const { id } = req.params;
+    const ad = await Ad.findByPk(id);
+
+    if (!ad) {
+        return next(new ApiError(404, 'الإعلان غير موجود'));
+    }
+
+    await ad.destroy();
+    res.status(200).json(new ApiResponse(200, null, 'تم حذف الإعلان بنجاح'));
+});
