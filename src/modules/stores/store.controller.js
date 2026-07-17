@@ -127,11 +127,14 @@ exports.createStore = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/stores
 // @access  Public
 exports.getStores = asyncHandler(async (req, res, next) => {
-    const { categoryId, cityId, search, isFeatured } = req.query;
+    const { categoryId, cityId, search, isFeatured, id } = req.query;
     const { Op } = require('sequelize');
 
     const whereClause = { status: 'active' };
 
+    if (id) {
+        whereClause.id = id;
+    }
     if (categoryId) {
         whereClause.categoryId = categoryId;
     }
