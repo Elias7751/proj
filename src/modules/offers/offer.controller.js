@@ -156,3 +156,146 @@ exports.validateCoupon = asyncHandler(async (req, res, next) => {
         finalAmount: (parseFloat(orderAmount) - discountAmount).toFixed(2)
     }, 'الكوبون صالح'));
 });
+
+// @desc    جلب عروض المتجر الخاص بالتاجر
+// @route   GET /api/v1/offers/my-offers
+// @access  Private (Store Owner)
+exports.getMyOffers = asyncHandler(async (req, res, next) => {
+    const store = await Store.findOne({ where: { ownerId: req.user.id } });
+    if (!store) {
+        return next(new ApiError(404, 'لم يتم العثور على متجر لك'));
+    }
+
+    const offers = await Offer.findAll({
+        where: { storeId: store.id },
+        include: [{ model: Product, as: 'products', attributes: ['id', 'name', 'price', 'images'] }],
+        order: [['createdAt', 'DESC']]
+    });
+
+    res.status(200).json(new ApiResponse(200, offers, 'تم جلب العروض بنجاح'));
+});
+
+// @desc    تحديث عرض
+// @route   PUT /api/v1/offers/:id
+// @access  Private (Store Owner)
+exports.updateOffer = asyncHandler(async (req, res, next) => {
+    const offer = await Offer.findByPk(req.params.id);
+    if (!offer) {
+        return next(new ApiError(404, 'العرض غير موجود'));
+    }
+
+    const store = await Store.findByPk(offer.storeId);
+    if (!store || (store.ownerId !== req.user.id && req.user.role !== 'admin')) {
+        return next(new ApiError(403, 'غير مصرح لك بتعديل هذا العرض'));
+    }
+
+    const { title, description, image, discountType, discountValue, startDate, endDate, status, productIds } = req.body;
+
+    await offer.update({
+        title,
+        description,
+        image,
+        discountType,
+        discountValue,
+        startDate,
+        endDate,
+        status
+    });
+
+    if (productIds) {
+        await offer.setProducts(productIds);
+    }
+
+    res.status(200).json(new ApiResponse(200, offer, 'تم تحديث العرض بنجاح'));
+});
+
+// @desc    حذف عرض
+// @route   DELETE /api/v1/offers/:id
+// @access  Private (Store Owner)
+exports.deleteOffer = asyncHandler(async (req, res, next) => {
+    const offer = await Offer.findByPk(req.params.id);
+    if (!offer) {
+        return next(new ApiError(404, 'العرض غير موجود'));
+    }
+
+    const store = await Store.findByPk(offer.storeId);
+    if (!store || (store.ownerId !== req.user.id && req.user.role !== 'admin')) {
+        return next(new ApiError(403, 'غير مصرح لك بحذف هذا العرض'));
+    }
+
+    await offer.destroy();
+    res.status(200).json(new ApiResponse(200, null, 'تم حذف العرض بنجاح'));
+});
+
+// @desc    جلب كوبونات المتجر الخاص بالتاجر
+// @route   GET /api/v1/offers/coupons/my-coupons
+// @access  Private (Store Owner)
+exports.getMyCoupons = asyncHandler(async (req, res, next) => {
+    const store = await Store.findOne({ where: { ownerId: req.user.id } });
+    if (!store) {
+        return next(new ApiError(404, 'لم يتم العثور على متجر لك'));
+    }
+
+    const coupons = await Coupon.findAll({
+        where: { storeId: store.id },
+        order: [['createdAt', 'DESC']]
+    });
+
+    res.status(200).json(new ApiResponse(200, coupons, 'تم جلب الكوبونات بنجاح'));
+});
+
+// @desc    تحديث كوبون
+// @route   PUT /api/v1/offers/coupons/:id
+// @access  Private (Store Owner)
+exports.updateCoupon = asyncHandler(async (req, res, next) => {
+    const coupon = await Coupon.findByPk(req.params.id);
+    if (!coupon) {
+        return next(new ApiError(404, 'الكوبون غير موجود'));
+    }
+
+    const store = await Store.findByPk(coupon.storeId);
+    if (!store || (store.ownerId !== req.user.id && req.user.role !== 'admin')) {
+        return next(new ApiError(403, 'غير مصرح لك بتعديل هذا الكوبون'));
+    }
+
+    const { code, discountType, discountValue, maxDiscount, minOrderAmount, startDate, endDate, usageLimit, status } = req.body;
+
+    if (code && code.toUpperCase() !== coupon.code) {
+        const existingCoupon = await Coupon.findOne({ where: { code: code.toUpperCase() } });
+        if (existingCoupon) {
+            return next(new ApiError(400, 'كود الكوبون موجود مسبقاً'));
+        }
+    }
+
+    await coupon.update({
+        code: code ? code.toUpperCase() : undefined,
+        discountType,
+        discountValue,
+        maxDiscount,
+        minOrderAmount,
+        startDate,
+        endDate,
+        usageLimit,
+        status
+    });
+
+    res.status(200).json(new ApiResponse(200, coupon, 'تم تحديث الكوبون بنجاح'));
+});
+
+// @desc    حذف كوبون
+// @route   DELETE /api/v1/offers/coupons/:id
+// @access  Private (Store Owner)
+exports.deleteCoupon = asyncHandler(async (req, res, next) => {
+    const coupon = await Coupon.findByPk(req.params.id);
+    if (!coupon) {
+        return next(new ApiError(404, 'الكوبون غير موجود'));
+    }
+
+    const store = await Store.findByPk(coupon.storeId);
+    if (!store || (store.ownerId !== req.user.id && req.user.role !== 'admin')) {
+        return next(new ApiError(403, 'غير مصرح لك بحذف هذا الكوبون'));
+    }
+
+    await coupon.destroy();
+    res.status(200).json(new ApiResponse(200, null, 'تم حذف الكوبون بنجاح'));
+});
