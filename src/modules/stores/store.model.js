@@ -63,6 +63,10 @@ const Store = sequelize.define('Store', {
         type: DataTypes.TEXT,
         allowNull: true
     },
+    socialLinks: {
+        type: DataTypes.JSON, // لتخزين روابط التواصل الاجتماعي مثل { facebook: "...", instagram: "..." }
+        allowNull: true
+    },
     minOrderAmount: {
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: 0.00
