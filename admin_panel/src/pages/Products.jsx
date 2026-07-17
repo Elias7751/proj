@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, Eye, EyeOff, Edit, Trash2, Package } from 'lucide-react';
+import { Search, Filter, Eye, EyeOff, Edit, Trash2, Package, Star } from 'lucide-react';
 import api from '../api/axios';
 
 const Products = () => {
@@ -27,6 +27,15 @@ const Products = () => {
       fetchProducts();
     } catch (error) {
       console.error('Error toggling product status:', error);
+    }
+  };
+
+  const handleToggleFeatured = async (id) => {
+    try {
+      await api.put(`/admin/products/${id}/featured`);
+      fetchProducts();
+    } catch (error) {
+      console.error('Error toggling product featured status:', error);
     }
   };
 
@@ -102,6 +111,14 @@ const Products = () => {
                         title={product.status === 'active' ? 'إخفاء' : 'إظهار'}
                       >
                         {product.status === 'active' ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                      <button
+                        onClick={() => handleToggleFeatured(product.id)}
+                        className="btn"
+                        style={{ padding: '6px', minWidth: 'auto', background: product.isFeatured ? '#FFF9C4' : 'var(--bg-color)', color: product.isFeatured ? '#FBC02D' : '#aaa' }}
+                        title={product.isFeatured ? 'إلغاء التمييز' : 'تمييز المنتج'}
+                      >
+                        <Star size={16} fill={product.isFeatured ? 'currentColor' : 'none'} />
                       </button>
                       <button className="btn" style={{ padding: '6px', minWidth: 'auto', background: 'var(--bg-color)' }} title="تعديل">
                         <Edit size={16} />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Activity, Trash2, Edit, CheckCircle, XCircle, User, Star, LogIn } from 'lucide-react';
+import { Activity, Trash2, Edit, CheckCircle, XCircle, User, Star, LogIn, Store } from 'lucide-react';
 import api from '../api/axios';
 
 const Logs = () => {
