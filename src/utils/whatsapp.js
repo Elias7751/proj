@@ -78,6 +78,9 @@ class WhatsAppService {
         if (address.details) {
             message += `${address.details}\n`;
         }
+        if (address.googleMapsLink) {
+            message += `🗺️ رابط الموقع: ${address.googleMapsLink}\n`;
+        }
         message += `\n`;
 
         message += `👤 *بيانات العميل:*\n`;
