@@ -48,11 +48,19 @@ app.get('/', (req, res) => {
 // Temporary route to seed admin and default data
 app.get('/api/v1/seed-all', async (req, res) => {
   try {
+    const sequelize = require('./config/database');
     const User = require('./modules/users/user.model');
+    const Store = require('./modules/stores/store.model');
     const SubscriptionPlan = require('./modules/subscriptions/plan.model');
     const Category = require('./modules/categories/category.model');
     const City = require('./modules/cities/city.model');
     const Area = require('./modules/cities/area.model');
+    const Offer = require('./modules/offers/offer.model');
+    const Coupon = require('./modules/offers/coupon.model');
+    const Order = require('./modules/orders/order.model');
+
+    // Sync database schema to add any missing columns like delivery_fee
+    await sequelize.sync({ alter: true });
 
     // 1. Seed Admin
     let admin = await User.findOne({ where: { phone: '777777777' } });
