@@ -20,7 +20,8 @@ const {
     getAllAds,
     createAdminAd,
     updateAdminAd,
-    deleteAdminAd
+    deleteAdminAd,
+    toggleProductFeatured
 } = require('./admin.controller');
 const { protect, authorize } = require('../../middleware/auth');
 const { getAuditLogs } = require('../auditLogs/auditLog.controller');
@@ -62,6 +63,8 @@ router.route('/products')
     .get(getAllProducts);
 router.route('/products/:id/status')
     .put(toggleProductStatus);
+router.route('/products/:id/featured')
+    .put(toggleProductFeatured);
 
 // مسارات الطلبات
 router.route('/orders')

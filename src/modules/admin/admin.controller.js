@@ -258,6 +258,23 @@ exports.toggleProductStatus = asyncHandler(async (req, res, next) => {
     res.status(200).json(new ApiResponse(200, product, `تم ${newStatus === 'active' ? 'إظهار' : 'إخفاء'} المنتج بنجاح`));
 });
 
+// @desc    تمييز/إلغاء تمييز منتج
+// @route   PUT /api/v1/admin/products/:id/featured
+// @access  Private (Admin)
+exports.toggleProductFeatured = asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+    const product = await Product.findByPk(id);
+
+    if (!product) {
+        return next(new ApiError(404, 'المنتج غير موجود'));
+    }
+
+    const newFeatured = !product.isFeatured;
+    await product.update({ isFeatured: newFeatured });
+
+    res.status(200).json(new ApiResponse(200, product, `تم ${newFeatured ? 'تمييز' : 'إلغاء تمييز'} المنتج بنجاح`));
+});
+
 // ==========================================
 // إدارة الطلبات
 // ==========================================
