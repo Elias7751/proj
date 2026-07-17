@@ -5,6 +5,7 @@ const CartItem = require('./cartItem.model');
 const Product = require('../products/product.model');
 const ProductVariant = require('../products/variant.model');
 const Store = require('../stores/store.model');
+const Coupon = require('../offers/coupon.model');
 const ApiError = require('../../utils/ApiError');
 const ApiResponse = require('../../utils/ApiResponse');
 const asyncHandler = require('../../utils/asyncHandler');
@@ -13,7 +14,7 @@ const asyncHandler = require('../../utils/asyncHandler');
 // @route   POST /api/v1/orders
 // @access  Private (Customer)
 exports.createOrder = asyncHandler(async (req, res, next) => {
-    const { deliveryAddress, paymentMethod, notes } = req.body;
+    const { deliveryAddress, paymentMethod, notes, couponCode } = req.body;
     const userId = req.user.id;
 
     // جلب السلة
@@ -45,7 +46,54 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
 
     // حساب المجموع (مؤقتاً رسوم التوصيل 0 حتى نربطها بالمنطقة)
     const deliveryFee = 0.00; // يمكن تعديلها لاحقاً لجلبها من Area
-    const totalAmount = parseFloat(cart.subTotal) + deliveryFee;
+    let discount = 0.00;
+
+    // التحقق من الكوبون وتطبيقه
+    if (couponCode) {
+        const coupon = await Coupon.findOne({
+            where: { code: couponCode.toUpperCase(), status: 'active' }
+        });
+
+        if (!coupon) {
+            return next(new ApiError(400, 'الكوبون غير صالح أو منتهي الصلاحية'));
+        }
+
+        // التحقق من تبعية الكوبون للمتجر
+        if (coupon.storeId && coupon.storeId !== cart.storeId) {
+            return next(new ApiError(400, 'هذا الكوبون غير تابع لهذا المتجر'));
+        }
+
+        // التحقق من التواريخ
+        const now = new Date();
+        if (now < new Date(coupon.startDate) || now > new Date(coupon.endDate)) {
+            return next(new ApiError(400, 'الكوبون غير صالح في الوقت الحالي'));
+        }
+
+        // التحقق من حد الاستخدام
+        if (coupon.usageLimit !== null && coupon.usageCount >= coupon.usageLimit) {
+            return next(new ApiError(400, 'تم تجاوز حد استخدام هذا الكوبون'));
+        }
+
+        // التحقق من الحد الأدنى لقيمة الطلب
+        if (parseFloat(cart.subTotal) < parseFloat(coupon.minOrderAmount)) {
+            return next(new ApiError(400, `الحد الأدنى لاستخدام الكوبون هو ${coupon.minOrderAmount} ريال`));
+        }
+
+        // حساب الخصم
+        if (coupon.discountType === 'fixed') {
+            discount = parseFloat(coupon.discountValue);
+        } else if (coupon.discountType === 'percentage') {
+            discount = (parseFloat(cart.subTotal) * parseFloat(coupon.discountValue)) / 100;
+            if (coupon.maxDiscount && discount > parseFloat(coupon.maxDiscount)) {
+                discount = parseFloat(coupon.maxDiscount);
+            }
+        }
+
+        // زيادة عدد مرات استخدام الكوبون
+        await coupon.increment('usageCount');
+    }
+
+    const totalAmount = parseFloat(cart.subTotal) + deliveryFee - discount;
 
     // توليد رقم طلب فريد
     const orderNumber = `ORD-${Math.floor(Math.random() * 1000000000)}`;
@@ -57,6 +105,7 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
         storeId: cart.storeId,
         subTotal: cart.subTotal,
         deliveryFee,
+        discount,
         totalAmount,
         deliveryAddress,
         paymentMethod: paymentMethod || 'cash_on_delivery',
