@@ -213,8 +213,29 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
         return next(new ApiError(403, 'غير مصرح لك بتعديل هذا المنتج'));
     }
 
+    const { variants } = req.body;
     const updatedProduct = await product.update(req.body);
-    res.status(200).json(new ApiResponse(200, updatedProduct, 'تم تحديث المنتج بنجاح'));
+
+    if (variants && Array.isArray(variants)) {
+        await ProductVariant.destroy({ where: { productId: product.id } });
+        if (variants.length > 0) {
+            const variantsData = variants.map(v => ({
+                productId: product.id,
+                attributeName: v.attributeName,
+                attributeValue: v.attributeValue,
+                additionalPrice: v.additionalPrice || 0.00,
+                stock: v.stock !== undefined ? v.stock : 999
+            }));
+            await ProductVariant.bulkCreate(variantsData);
+        }
+    }
+
+    // Get product with updated variants
+    const productWithVariants = await Product.findByPk(product.id, {
+        include: [{ model: ProductVariant, as: 'variants' }]
+    });
+
+    res.status(200).json(new ApiResponse(200, productWithVariants, 'تم تحديث المنتج بنجاح'));
 });
 
 // @desc    حذف منتج
