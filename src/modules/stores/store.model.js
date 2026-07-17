@@ -67,6 +67,10 @@ const Store = sequelize.define('Store', {
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: 0.00
     },
+    deliveryFee: {
+        type: DataTypes.DECIMAL(10, 2),
+        defaultValue: 0.00
+    },
     rating: {
         type: DataTypes.DECIMAL(3, 2),
         defaultValue: 5.00

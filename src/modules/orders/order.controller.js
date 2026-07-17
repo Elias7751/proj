@@ -44,8 +44,8 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
         return next(new ApiError(400, `الحد الأدنى للطلب من هذا المتجر هو ${minOrderAmount}`));
     }
 
-    // حساب المجموع (مؤقتاً رسوم التوصيل 0 حتى نربطها بالمنطقة)
-    const deliveryFee = 0.00; // يمكن تعديلها لاحقاً لجلبها من Area
+    // حساب المجموع باستخدام رسوم التوصيل المحددة للمتجر
+    const deliveryFee = store.deliveryFee ? parseFloat(store.deliveryFee) : 0.00;
     let discount = 0.00;
 
     // التحقق من الكوبون وتطبيقه

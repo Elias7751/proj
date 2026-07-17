@@ -33,6 +33,7 @@ exports.createStore = asyncHandler(async (req, res, next) => {
         workingHours,
         deliveryPolicy,
         minOrderAmount,
+        deliveryFee,
         categoryId,
         cityId,
         areaId
@@ -99,6 +100,7 @@ exports.createStore = asyncHandler(async (req, res, next) => {
         workingHours,
         deliveryPolicy,
         minOrderAmount: minOrderAmount || 0.00,
+        deliveryFee: deliveryFee || 0.00,
         ownerId: req.user.id,
         categoryId: category.id,
         cityId,
