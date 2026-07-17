@@ -229,3 +229,16 @@ exports.getMyStore = asyncHandler(async (req, res, next) => {
 
     res.status(200).json(new ApiResponse(200, store, 'تم جلب بيانات متجرك بنجاح'));
 });
+
+// @desc    تعديل بيانات متجر التاجر المسجل حالياً
+// @route   PUT /api/v1/stores/my-store
+// @access  Private (Store Owner)
+exports.updateMyStore = asyncHandler(async (req, res, next) => {
+    const store = await Store.findOne({ where: { ownerId: req.user.id } });
+    if (!store) {
+        return next(new ApiError(404, 'لم يتم العثور على متجر مرتبط بحسابك'));
+    }
+
+    const updatedStore = await store.update(req.body);
+    res.status(200).json(new ApiResponse(200, updatedStore, 'تم تحديث بيانات المتجر بنجاح'));
+});

@@ -1,5 +1,5 @@
 const express = require('express');
-const { createStore, getStores, getStoreBySlug, updateStore, getMyStore } = require('./store.controller');
+const { createStore, getStores, getStoreBySlug, updateStore, getMyStore, updateMyStore } = require('./store.controller');
 const { protect } = require('../../middleware/auth');
 const productRoutes = require('../products/product.routes');
 
@@ -13,7 +13,9 @@ router.route('/')
     .post(protect, createStore);
 
 // يجب وضع هذا المسار قبل :slug لتجنب تعارضه مع المعرفات
-router.get('/my-store', protect, getMyStore);
+router.route('/my-store')
+    .get(protect, getMyStore)
+    .put(protect, updateMyStore);
 
 router.route('/:slug')
     .get(getStoreBySlug);
