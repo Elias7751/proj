@@ -349,6 +349,34 @@ exports.updateOrderStatus = asyncHandler(async (req, res, next) => {
         }
     }
 
+    // إرسال إشعار للعميل بتحديث حالة الطلب
+    const Notification = require('../notifications/notification.model');
+    let statusTextAr = '';
+    switch (status) {
+        case 'preparing':
+            statusTextAr = 'جاري تجهيزه';
+            break;
+        case 'on_the_way':
+            statusTextAr = 'في الطريق إليك';
+            break;
+        case 'delivered':
+            statusTextAr = 'تم توصيله بنجاح';
+            break;
+        case 'cancelled':
+            statusTextAr = 'تم إلغاؤه';
+            break;
+        default:
+            statusTextAr = status;
+    }
+
+    await Notification.create({
+        userId: order.userId,
+        title: 'تحديث حالة الطلب',
+        message: `طلبك رقم #${order.orderNumber} أصبح الآن: ${statusTextAr}`,
+        type: 'order',
+        link: `/orders/${order.id}`
+    });
+
     res.status(200).json(new ApiResponse(200, order, 'تم تحديث حالة الطلب بنجاح'));
 });
 
