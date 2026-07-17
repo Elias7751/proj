@@ -16,7 +16,7 @@ const Merchants = () => {
 
     const fetchStores = async () => {
         try {
-            const response = await api.get('/admin/stores');
+            const response = await api.get('/admin/merchants');
             setStores(response.data.data);
         } catch (error) {
             console.error('Error fetching stores:', error);
@@ -102,54 +102,63 @@ const Merchants = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {stores.map((store) => (
-                                <tr key={store.id}>
-                                    <td>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                            <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'var(--bg-color)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                <Store size={20} color="var(--text-muted)" />
+                            {stores.map((merchant) => {
+                                const store = merchant.stores && merchant.stores.length > 0 ? merchant.stores[0] : null;
+                                return (
+                                    <tr key={merchant.id}>
+                                        <td>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'var(--bg-color)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                    <Store size={20} color="var(--text-muted)" />
+                                                </div>
+                                                <div>
+                                                    <div style={{ fontWeight: '600' }}>{store ? store.nameAr : 'لم ينشئ متجراً بعد'}</div>
+                                                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{store ? store.nameEn : '---'}</div>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <div style={{ fontWeight: '600' }}>{store.nameAr}</div>
-                                                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{store.nameEn}</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>{store.owner?.fullName}</div>
-                                        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{store.owner?.phone}</div>
-                                    </td>
-                                    <td dir="ltr" style={{ textAlign: 'right' }}>{store.whatsappNumber}</td>
-                                    <td>{new Date(store.createdAt).toLocaleDateString('ar-EG')}</td>
-                                    <td>
-                                        <span className={`badge ${store.status === 'active' ? 'badge-success' : store.status === 'pending' ? 'badge-warning' : 'badge-danger'}`}>
-                                            {store.status === 'active' ? 'نشط' : store.status === 'pending' ? 'قيد المراجعة' : 'مرفوض'}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div style={{ display: 'flex', gap: '8px' }}>
-                                            {store.status === 'pending' && (
-                                                <>
-                                                    <button onClick={() => handleApprove(store.id)} className="btn btn-primary" style={{ padding: '6px', minWidth: 'auto' }} title="قبول">
-                                                        <CheckCircle size={16} />
-                                                    </button>
-                                                    <button onClick={() => handleReject(store.id)} className="btn btn-danger" style={{ padding: '6px', minWidth: 'auto' }} title="رفض">
-                                                        <XCircle size={16} />
-                                                    </button>
-                                                </>
+                                        </td>
+                                        <td>
+                                            <div>{merchant.fullName}</div>
+                                            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{merchant.phone}</div>
+                                        </td>
+                                        <td dir="ltr" style={{ textAlign: 'right' }}>{store ? store.whatsappNumber : merchant.phone}</td>
+                                        <td>{new Date(merchant.createdAt).toLocaleDateString('ar-EG')}</td>
+                                        <td>
+                                            {store ? (
+                                                <span className={`badge ${store.status === 'active' ? 'badge-success' : store.status === 'pending' ? 'badge-warning' : 'badge-danger'}`}>
+                                                    {store.status === 'active' ? 'متجر نشط' : store.status === 'pending' ? 'قيد المراجعة' : 'مرفوض'}
+                                                </span>
+                                            ) : (
+                                                <span className="badge badge-warning">بدون متجر</span>
                                             )}
-                                            <button
-                                                onClick={() => handleViewDetails(store)}
-                                                className="btn"
-                                                style={{ padding: '6px', minWidth: 'auto', background: 'var(--bg-color)' }}
-                                                title="عرض التفاصيل والمعاينة"
-                                            >
-                                                <Eye size={16} />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
+                                        </td>
+                                        <td>
+                                            <div style={{ display: 'flex', gap: '8px' }}>
+                                                {store && store.status === 'pending' && (
+                                                    <>
+                                                        <button onClick={() => handleApprove(store.id)} className="btn btn-primary" style={{ padding: '6px', minWidth: 'auto' }} title="قبول">
+                                                            <CheckCircle size={16} />
+                                                        </button>
+                                                        <button onClick={() => handleReject(store.id)} className="btn btn-danger" style={{ padding: '6px', minWidth: 'auto' }} title="رفض">
+                                                            <XCircle size={16} />
+                                                        </button>
+                                                    </>
+                                                )}
+                                                {store && (
+                                                    <button
+                                                        onClick={() => handleViewDetails(store)}
+                                                        className="btn"
+                                                        style={{ padding: '6px', minWidth: 'auto', background: 'var(--bg-color)' }}
+                                                        title="عرض التفاصيل والمعاينة"
+                                                    >
+                                                        <Eye size={16} />
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
                             {stores.length === 0 && (
                                 <tr>
                                     <td colSpan="6" style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)' }}>

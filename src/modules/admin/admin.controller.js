@@ -144,6 +144,18 @@ exports.getStores = asyncHandler(async (req, res, next) => {
     res.status(200).json(new ApiResponse(200, stores, 'تم جلب المتاجر بنجاح'));
 });
 
+// @desc    جلب جميع التجار (المستخدمين بدور تاجر) مع متاجرهم
+// @route   GET /api/v1/admin/merchants
+// @access  Private (Admin)
+exports.getMerchants = asyncHandler(async (req, res, next) => {
+    const merchants = await User.findAll({
+        where: { role: 'store_owner' },
+        include: [{ model: Store, as: 'stores' }],
+        order: [['created_at', 'DESC']]
+    });
+    res.status(200).json(new ApiResponse(200, merchants, 'تم جلب التجار بنجاح'));
+});
+
 // @desc    الموافقة على متجر
 // @route   PUT /api/v1/admin/stores/:id/approve
 // @access  Private (Admin)

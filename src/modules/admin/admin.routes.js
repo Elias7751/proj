@@ -21,7 +21,8 @@ const {
     createAdminAd,
     updateAdminAd,
     deleteAdminAd,
-    toggleProductFeatured
+    toggleProductFeatured,
+    getMerchants
 } = require('./admin.controller');
 const { protect, authorize } = require('../../middleware/auth');
 const { getAuditLogs } = require('../auditLogs/auditLog.controller');
@@ -48,9 +49,11 @@ router.route('/users/:id')
 router.route('/users/:id/block')
     .put(toggleUserBlock);
 
-// مسارات المتاجر
+// مسارات المتاجر والتجار
 router.route('/stores')
     .get(getStores);
+router.route('/merchants')
+    .get(getMerchants);
 router.route('/stores/:id/approve')
     .put(approveStore);
 router.route('/stores/:id/reject')

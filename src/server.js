@@ -31,8 +31,8 @@ async function startServer() {
         console.log('✅ متصل بقاعدة البيانات MySQL بنجاح عبر Sequelize');
 
         // مزامنة النماذج مع قاعدة البيانات
-        // نستخدم sync() بدون alter لتجنب خطأ Too many keys في بيئة التطوير
-        await sequelize.sync();
+        // نستخدم sync({ alter: true }) لتحديث الجداول وإضافة الأعمدة الجديدة
+        await sequelize.sync({ alter: true });
         console.log('✅ تم مزامنة جداول قاعدة البيانات بنجاح');
 
         // تشغيل الخادم
