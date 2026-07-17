@@ -47,11 +47,34 @@ exports.getStoreSummary = asyncHandler(async (req, res, next) => {
         where: { storeId: store.id }
     });
 
+    // 5. مبيعات آخر 7 أيام للرسم البياني
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+
+    const dailySales = await Order.findAll({
+        where: {
+            storeId: store.id,
+            status: 'delivered',
+            createdAt: {
+                [Op.gte]: sevenDaysAgo
+            }
+        },
+        attributes: [
+            [fn('date', col('created_at')), 'date'],
+            [fn('SUM', col('total_amount')), 'amount']
+        ],
+        group: [fn('date', col('created_at'))],
+        order: [[fn('date', col('created_at')), 'ASC']],
+        raw: true
+    });
+
     res.status(200).json(new ApiResponse(200, {
         totalSales,
         totalOrders,
         uniqueCustomers,
-        totalProducts
+        totalProducts,
+        dailySales
     }, 'تم جلب ملخص المتجر بنجاح'));
 });
 
