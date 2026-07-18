@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../auth/controllers/auth_controller.dart';
 import '../../../routes/app_pages.dart';
+import '../controllers/settings_controller.dart';
 import 'policy_screen.dart';
 
 class AppSettingsScreen extends StatelessWidget {
@@ -22,6 +23,7 @@ class AppSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthController authController = Get.find<AuthController>();
+    final SettingsController settingsController = Get.put(SettingsController());
 
     return Scaffold(
       appBar: AppBar(
@@ -106,12 +108,10 @@ class AppSettingsScreen extends StatelessWidget {
                   title: Text('شروط وأحكام المنصة', style: GoogleFonts.cairo()),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
-                    Get.to(() => const PolicyScreen(
+                    final terms = settingsController.platformSettings['termsAndConditions'] ?? 'لا توجد شروط وأحكام حالياً.';
+                    Get.to(() => PolicyScreen(
                       title: 'شروط وأحكام المنصة',
-                      content: '1. يلتزم التاجر بتقديم منتجات مطابقة للوصف.\n\n'
-                               '2. يمنع بيع المنتجات المحظورة قانونياً.\n\n'
-                               '3. المنصة غير مسؤولة عن أي خلاف مالي بين التاجر والعميل خارج نطاق المنصة.\n\n'
-                               '4. يحق للمنصة إيقاف أي متجر يخالف الشروط.',
+                      content: terms,
                     ));
                   },
                 ),
@@ -121,9 +121,10 @@ class AppSettingsScreen extends StatelessWidget {
                   title: Text('سياسة الخصوصية', style: GoogleFonts.cairo()),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
-                    Get.to(() => const PolicyScreen(
+                    final privacy = settingsController.platformSettings['privacyPolicy'] ?? 'لا توجد سياسة خصوصية حالياً.';
+                    Get.to(() => PolicyScreen(
                       title: 'سياسة الخصوصية',
-                      content: 'نحن نحترم خصوصيتك. يتم تشفير بياناتك ولا يتم مشاركتها مع أي طرف ثالث بدون موافقتك. نستخدم بياناتك فقط لتحسين تجربتك في المنصة وتسهيل عمليات البيع والشراء.',
+                      content: privacy,
                     ));
                   },
                 ),

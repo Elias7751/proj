@@ -9,10 +9,23 @@ const Merchants = () => {
     const [storeProducts, setStoreProducts] = useState([]);
     const [loadingProducts, setLoadingProducts] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [plans, setPlans] = useState([]);
+    const [selectedPlanId, setSelectedPlanId] = useState('');
+    const [assigningPlan, setAssigningPlan] = useState(false);
 
     useEffect(() => {
         fetchStores();
+        fetchPlans();
     }, []);
+
+    const fetchPlans = async () => {
+        try {
+            const response = await api.get('/subscriptions/plans');
+            setPlans(response.data.data);
+        } catch (error) {
+            console.error('Error fetching plans:', error);
+        }
+    };
 
     const fetchStores = async () => {
         try {
@@ -64,6 +77,24 @@ const Merchants = () => {
             setStoreProducts([]);
         } finally {
             setLoadingProducts(false);
+        }
+    };
+
+    const handleAssignPlan = async () => {
+        if (!selectedPlanId) return alert('يرجى اختيار خطة أولاً');
+        setAssigningPlan(true);
+        try {
+            await api.post('/subscriptions/assign', {
+                storeId: selectedStore.id,
+                planId: selectedPlanId
+            });
+            alert('تم تعيين الخطة بنجاح');
+            fetchStores(); // Refresh to get updated data
+        } catch (error) {
+            console.error('Error assigning plan:', error);
+            alert('حدث خطأ أثناء تعيين الخطة');
+        } finally {
+            setAssigningPlan(false);
         }
     };
 
@@ -207,6 +238,30 @@ const Merchants = () => {
                                 <h3 style={{ fontSize: '16px', marginBottom: '12px', borderBottom: '1px solid rgba(0,0,0,0.05)', paddingBottom: '8px' }}>بيانات المالك</h3>
                                 <p style={{ marginBottom: '8px' }}><strong>الاسم:</strong> {selectedStore.owner?.fullName || 'غير معروف'}</p>
                                 <p style={{ marginBottom: '8px' }}><strong>الهاتف:</strong> <span dir="ltr">{selectedStore.owner?.phone || 'غير معروف'}</span></p>
+                            </div>
+                        </div>
+
+                        <div style={{ marginBottom: '32px', padding: '16px', background: 'var(--bg-color)', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.05)' }}>
+                            <h3 style={{ fontSize: '16px', marginBottom: '12px' }}>ترقية / تعيين خطة اشتراك</h3>
+                            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                                <select
+                                    className="input-field"
+                                    style={{ flex: 1, margin: 0 }}
+                                    value={selectedPlanId}
+                                    onChange={(e) => setSelectedPlanId(e.target.value)}
+                                >
+                                    <option value="">-- اختر الخطة --</option>
+                                    {plans.map(plan => (
+                                        <option key={plan.id} value={plan.id}>{plan.nameAr} ({plan.price} ريال)</option>
+                                    ))}
+                                </select>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={handleAssignPlan}
+                                    disabled={assigningPlan || !selectedPlanId}
+                                >
+                                    {assigningPlan ? 'جاري التعيين...' : 'تعيين الخطة'}
+                                </button>
                             </div>
                         </div>
 

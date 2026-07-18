@@ -9,12 +9,26 @@ class SettingsController extends GetxController {
   var storeDetails = {}.obs;
   var currentSubscription = {}.obs;
   var availablePlans = [].obs;
+  var platformSettings = {}.obs;
 
   @override
   void onInit() {
     super.onInit();
     fetchStoreDetails();
     fetchSubscriptionDetails();
+    fetchPlatformSettings();
+  }
+
+  // جلب إعدادات المنصة (السياسات وغيرها)
+  Future<void> fetchPlatformSettings() async {
+    try {
+      final response = await _apiClient.get('/settings');
+      if (response.statusCode == 200) {
+        platformSettings.value = response.data['data'];
+      }
+    } catch (e) {
+      // تجاهل الأخطاء
+    }
   }
 
   // جلب تفاصيل المتجر

@@ -90,3 +90,36 @@ exports.getMySubscription = asyncHandler(async (req, res, next) => {
 
     res.status(200).json(new ApiResponse(200, subscription, 'تم جلب الاشتراك بنجاح'));
 });
+
+// @desc    تعيين خطة لمتجر (من قبل الإدارة)
+// @route   POST /api/v1/subscriptions/assign
+// @access  Private (Admin)
+exports.assignPlanToStore = asyncHandler(async (req, res, next) => {
+    const { storeId, planId } = req.body;
+
+    const store = await Store.findByPk(storeId);
+    if (!store) return next(new ApiError(404, 'المتجر غير موجود'));
+
+    const plan = await SubscriptionPlan.findByPk(planId);
+    if (!plan) return next(new ApiError(404, 'الخطة غير موجودة'));
+
+    // حساب تاريخ الانتهاء
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() + plan.durationDays);
+
+    // إلغاء الاشتراكات السابقة النشطة
+    await StoreSubscription.update(
+        { status: 'cancelled' },
+        { where: { storeId: store.id, status: 'active' } }
+    );
+
+    const subscription = await StoreSubscription.create({
+        storeId: store.id,
+        planId: plan.id,
+        endDate,
+        paymentStatus: 'paid',
+        status: 'active'
+    });
+
+    res.status(201).json(new ApiResponse(201, subscription, 'تم تعيين الخطة للمتجر بنجاح'));
+});

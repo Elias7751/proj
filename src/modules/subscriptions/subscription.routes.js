@@ -5,7 +5,8 @@ const {
     updatePlan,
     deletePlan,
     subscribeToPlan,
-    getMySubscription
+    getMySubscription,
+    assignPlanToStore
 } = require('./subscription.controller');
 const { protect, authorize } = require('../../middleware/auth');
 
@@ -22,5 +23,6 @@ router.get('/my', protect, authorize('store_owner'), getMySubscription);
 router.post('/plans', protect, authorize('admin'), createPlan);
 router.put('/plans/:id', protect, authorize('admin'), updatePlan);
 router.delete('/plans/:id', protect, authorize('admin'), deletePlan);
+router.post('/assign', protect, authorize('admin'), assignPlanToStore);
 
 module.exports = router;
