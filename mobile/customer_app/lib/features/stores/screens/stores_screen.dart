@@ -57,15 +57,21 @@ class StoresScreen extends StatelessWidget {
           return const Center(child: Text('لا توجد متاجر مطابقة للبحث'));
         }
 
-        return ListView.builder(
+        return GridView.builder(
           padding: const EdgeInsets.all(16),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.75,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+          ),
           itemCount: storeController.stores.length,
           itemBuilder: (context, index) {
             final store = storeController.stores[index];
             return Card(
-              margin: const EdgeInsets.only(bottom: 16),
+              elevation: 2,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
               ),
               child: InkWell(
                 onTap: () {
@@ -74,81 +80,87 @@ class StoresScreen extends StatelessWidget {
                     arguments: {'slug': store['slug'], 'storeId': store['id']},
                   );
                 },
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // صورة المتجر (مؤقتاً لون رمادي)
-                    Container(
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(12),
+                    // صورة المتجر
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF6366F1).withOpacity(0.1),
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(16),
+                          ),
+                        ),
+                        child: const Center(
+                          child: Icon(Icons.storefront, size: 40, color: Color(0xFF6366F1)),
                         ),
                       ),
-                      child: const Center(
-                        child: Icon(Icons.store, size: 50, color: Colors.grey),
-                      ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  store['nameAr'] ?? 'اسم المتجر',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      flex: 4,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              store['nameAr'] ?? 'اسم المتجر',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: 14,
                                 ),
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                    size: 18,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(store['rating']?.toString() ?? '5.0'),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            store['description'] ?? 'وصف المتجر',
-                            style: TextStyle(color: Colors.grey[600]),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.location_on,
-                                size: 16,
-                                color: Colors.grey,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                '${store['city']?['nameAr'] ?? ''} - ${store['area']?['nameAr'] ?? ''}',
-                                style: const TextStyle(
+                                const SizedBox(width: 4),
+                                Text(
+                                  store['rating']?.toString() ?? '5.0',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            Text(
+                              store['description'] ?? 'وصف المتجر',
+                              style: TextStyle(color: Colors.grey[600], fontSize: 11),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on,
+                                  size: 12,
                                   color: Colors.grey,
-                                  fontSize: 12,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                const SizedBox(width: 2),
+                                Expanded(
+                                  child: Text(
+                                    '${store['city']?['nameAr'] ?? ''}',
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 10,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

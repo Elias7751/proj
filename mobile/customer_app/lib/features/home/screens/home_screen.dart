@@ -50,56 +50,9 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // مساحة الإعلانات (Banner)
-              Container(
-                height: 160,
-                margin: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                  image: DecorationImage(
-                    image: homeController.ads.isNotEmpty
-                        ? NetworkImage(homeController.ads[0]['image'])
-                        : const NetworkImage(
-                            'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop',
-                          ) as ImageProvider,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black.withOpacity(0.7),
-                      ],
-                    ),
-                  ),
-                  alignment: Alignment.bottomRight,
-                  padding: const EdgeInsets.all(16),
-                  child: const Text(
-                    'عروض حصرية تصل إلى 50%',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-
-              // التصنيفات
+              // التصنيفات (في الأعلى)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -191,6 +144,55 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
               ),
+
+              // مساحة الإعلانات (Banner)
+              Container(
+                height: 160,
+                margin: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                  image: DecorationImage(
+                    image: homeController.ads.isNotEmpty
+                        ? NetworkImage(homeController.ads[0]['image'])
+                        : const NetworkImage(
+                            'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop',
+                          ) as ImageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withOpacity(0.7),
+                      ],
+                    ),
+                  ),
+                  alignment: Alignment.bottomRight,
+                  padding: const EdgeInsets.all(16),
+                  child: const Text(
+                    'عروض حصرية تصل إلى 50%',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+
+
 
               // العروض الترويجية
               Obx(() {
@@ -329,127 +331,154 @@ class HomeScreen extends StatelessWidget {
 
               // المتاجر المميزة
               Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'المتاجر المميزة',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'المتاجر المميزة',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () => Get.toNamed(Routes.STORES), 
+                      child: const Text('عرض الكل')
+                    ),
+                  ],
                 ),
               ),
               if (homeController.featuredStores.isEmpty)
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(12),
-                        leading: Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF6366F1).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
+                SizedBox(
+                  height: 180,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        width: 140,
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          child: const Icon(Icons.storefront, color: Color(0xFF6366F1), size: 30),
-                        ),
-                        title: Text(
-                          'متجر تجريبي ${index + 1}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: const Text(
-                          'أفضل المنتجات بأسعار منافسة',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        trailing: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[100],
-                            shape: BoxShape.circle,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF6366F1).withOpacity(0.1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(Icons.storefront, color: Color(0xFF6366F1), size: 30),
+                              ),
+                              const SizedBox(height: 12),
+                              Text(
+                                'متجر تجريبي ${index + 1}',
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
-                          child: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
                         ),
-                        onTap: () {},
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 )
               else
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: homeController.featuredStores.length,
-                  itemBuilder: (context, index) {
-                    final store = homeController.featuredStores[index];
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(12),
-                        leading: Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF6366F1).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
+                SizedBox(
+                  height: 180,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    itemCount: homeController.featuredStores.length,
+                    itemBuilder: (context, index) {
+                      final store = homeController.featuredStores[index];
+                      return Container(
+                        width: 140,
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          child: const Icon(Icons.storefront, color: Color(0xFF6366F1), size: 30),
-                        ),
-                        title: Text(
-                          store['nameAr'] ?? 'اسم المتجر',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          store['description'] ?? 'وصف قصير للمتجر',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        trailing: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[100],
-                            shape: BoxShape.circle,
+                          child: InkWell(
+                            onTap: () {
+                              Get.toNamed(
+                                '/store-details',
+                                arguments: {'slug': store['slug'], 'storeId': store['id']},
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(16),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF6366F1).withOpacity(0.1),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(Icons.storefront, color: Color(0xFF6366F1), size: 30),
+                                ),
+                                const SizedBox(height: 12),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Text(
+                                    store['nameAr'] ?? 'اسم المتجر',
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.star, color: Colors.amber, size: 14),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      store['rating']?.toString() ?? '5.0',
+                                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                          child: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
                         ),
-                        onTap: () {
-                          Get.toNamed(
-                            '/store-details',
-                            arguments: {'slug': store['slug'], 'storeId': store['id']},
-                          );
-                        },
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               
               const SizedBox(height: 16),
 
               // المنتجات المميزة (5 نجوم)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Text(
-                  'المنتجات المميزة',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'المنتجات المميزة',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // الانتقال لصفحة المنتجات (يمكن إضافتها لاحقاً)
+                      }, 
+                      child: const Text('عرض الكل')
+                    ),
+                  ],
                 ),
               ),
               if (homeController.featuredProducts.isEmpty)
