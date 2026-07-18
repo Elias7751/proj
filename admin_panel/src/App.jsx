@@ -15,6 +15,8 @@ import Settings from './pages/Settings';
 import Login from './pages/Login';
 import FeaturedStores from './pages/FeaturedStores';
 import Banners from './pages/Banners';
+import Categories from './pages/Categories';
+import Cities from './pages/Cities';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('adminToken'));
@@ -43,6 +45,8 @@ function App() {
             <Route path="/merchants" element={<Merchants />} />
             <Route path="/featured-stores" element={<FeaturedStores />} />
             <Route path="/banners" element={<Banners />} />
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/cities" element={<Cities />} />
             <Route path="/products" element={<Products />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/subscriptions" element={<Subscriptions />} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Store, Users, Settings, LogOut, CreditCard, ShoppingBag, Package, Bell, Shield, FileText, Activity, Star, Image } from 'lucide-react';
+import { LayoutDashboard, Store, Users, Settings, LogOut, CreditCard, ShoppingBag, Package, Bell, Shield, FileText, Activity, Star, Image, ListTree, MapPin } from 'lucide-react';
 
 const Sidebar = ({ onLogout }) => {
     return (
@@ -30,6 +30,14 @@ const Sidebar = ({ onLogout }) => {
                 <NavLink to="/banners" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
                     <Image size={20} />
                     <span>إعلانات البنرات</span>
+                </NavLink>
+                <NavLink to="/categories" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+                    <ListTree size={20} />
+                    <span>التصنيفات</span>
+                </NavLink>
+                <NavLink to="/cities" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+                    <MapPin size={20} />
+                    <span>المحافظات والمناطق</span>
                 </NavLink>
                 <NavLink to="/products" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
                     <Package size={20} />
