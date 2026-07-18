@@ -9,10 +9,20 @@ class StoresScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final StoreController storeController = Get.put(StoreController());
+    
+    // قراءة المعاملات الممررة
+    final args = Get.arguments as Map<String, dynamic>?;
+    final categoryId = args?['categoryId'];
+    final categoryName = args?['categoryName'] ?? 'المتاجر';
+
+    // جلب المتاجر بناءً على التصنيف إذا وجد
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      storeController.fetchStores(categoryId: categoryId);
+    });
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('المتاجر'),
+        title: Text(categoryName),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Padding(
@@ -30,7 +40,7 @@ class StoresScreen extends StatelessWidget {
                 contentPadding: const EdgeInsets.symmetric(vertical: 0),
               ),
               onSubmitted: (value) {
-                storeController.fetchStores(search: value);
+                storeController.fetchStores(search: value, categoryId: categoryId);
               },
             ),
           ),

@@ -131,47 +131,61 @@ class HomeScreen extends StatelessWidget {
                     final dummyNames = ['إلكترونيات', 'ملابس', 'عطور', 'أحذية', 'أخرى'];
                     final dummyIcons = [Icons.phone_android, Icons.checkroom, Icons.local_florist, Icons.shopping_bag, Icons.more_horiz];
 
-                    return Container(
-                      width: 85,
-                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 70,
-                            width: 70,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: isDummy || category['image'] == null
-                                ? Icon(
-                                    isDummy ? dummyIcons[index] : Icons.category,
-                                    color: const Color(0xFF6366F1),
-                                    size: 30,
-                                  )
-                                : ClipOval(
-                                    child: Image.network(
-                                      category['image'],
-                                      fit: BoxFit.cover,
-                                    ),
+                    return InkWell(
+                      onTap: () {
+                        if (!isDummy) {
+                          Get.toNamed(
+                            Routes.STORES,
+                            arguments: {
+                              'categoryId': category['id'],
+                              'categoryName': category['nameAr']
+                            },
+                          );
+                        }
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        width: 85,
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 70,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
                                   ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            isDummy ? dummyNames[index] : (category['nameAr'] ?? 'تصنيف'),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                        ],
+                                ],
+                              ),
+                              child: isDummy || category['image'] == null
+                                  ? Icon(
+                                      isDummy ? dummyIcons[index] : Icons.category,
+                                      color: const Color(0xFF6366F1),
+                                      size: 30,
+                                    )
+                                  : ClipOval(
+                                      child: Image.network(
+                                        category['image'],
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              isDummy ? dummyNames[index] : (category['nameAr'] ?? 'تصنيف'),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
