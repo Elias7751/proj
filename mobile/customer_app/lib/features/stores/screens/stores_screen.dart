@@ -57,8 +57,12 @@ class StoresScreen extends StatelessWidget {
           return const Center(child: Text('لا توجد متاجر مطابقة للبحث'));
         }
 
-        return GridView.builder(
-          padding: const EdgeInsets.all(16),
+        return RefreshIndicator(
+          onRefresh: () => storeController.fetchStores(categoryId: categoryId),
+          color: const Color(0xFF6366F1),
+          child: GridView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(16),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 0.75,

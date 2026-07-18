@@ -20,17 +20,27 @@ class OrdersScreen extends StatelessWidget {
         }
 
         if (orderController.myOrders.isEmpty) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.receipt_long, size: 100, color: Colors.grey),
-                SizedBox(height: 16),
-                Text(
-                  'لا توجد طلبات سابقة',
-                  style: TextStyle(fontSize: 20, color: Colors.grey),
+          return RefreshIndicator(
+            onRefresh: () => orderController.fetchMyOrders(),
+            color: const Color(0xFF6366F1),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height - 200,
+                child: const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.receipt_long, size: 100, color: Colors.grey),
+                      SizedBox(height: 16),
+                      Text(
+                        'لا توجد طلبات سابقة',
+                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
           );
         }

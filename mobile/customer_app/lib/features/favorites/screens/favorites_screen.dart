@@ -23,17 +23,27 @@ class FavoritesScreen extends StatelessWidget {
         }
 
         if (favoriteController.myFavorites.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.favorite_border, size: 100, color: Colors.grey),
-                const SizedBox(height: 16),
-                Text(
-                  'لا توجد منتجات في المفضلة',
-                  style: GoogleFonts.cairo(fontSize: 20, color: Colors.grey),
+          return RefreshIndicator(
+            onRefresh: () => favoriteController.fetchFavorites(),
+            color: const Color(0xFF6366F1),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height - 200,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.favorite_border, size: 100, color: Colors.grey),
+                      const SizedBox(height: 16),
+                      Text(
+                        'لا توجد منتجات في المفضلة',
+                        style: GoogleFonts.cairo(fontSize: 20, color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
           );
         }

@@ -46,8 +46,12 @@ class HomeScreen extends StatelessWidget {
           );
         }
 
-        return SingleChildScrollView(
-          child: Column(
+        return RefreshIndicator(
+          onRefresh: homeController.fetchHomeData,
+          color: const Color(0xFF6366F1),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // التصنيفات (في الأعلى)

@@ -36,8 +36,15 @@ class CartScreen extends StatelessWidget {
         return Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.all(16),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  cartController.cartItems.refresh(); // Just to trigger a UI update
+                },
+                color: const Color(0xFF6366F1),
+                child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(16),
                 itemCount: cartController.cartItems.length,
                 itemBuilder: (context, index) {
                   final item = cartController.cartItems[index];
@@ -129,6 +136,7 @@ class CartScreen extends StatelessWidget {
                   );
                 },
               ),
+            ),
             ),
 
             // منطقة إتمام الطلب

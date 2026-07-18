@@ -31,82 +31,89 @@ class ProfileScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // معلومات المستخدم
-            Obx(() {
-              final user = authController.currentUser;
-              return Column(
-                children: [
-                  const CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Color(0xFF6366F1),
-                    child: Icon(Icons.person, size: 50, color: Colors.white),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    user['fullName'] ?? 'المستخدم',
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await authController.checkAuth();
+        },
+        color: const Color(0xFF6366F1),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // معلومات المستخدم
+              Obx(() {
+                final user = authController.currentUser;
+                return Column(
+                  children: [
+                    const CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Color(0xFF6366F1),
+                      child: Icon(Icons.person, size: 50, color: Colors.white),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    user['phone'] ?? '',
-                    style: const TextStyle(color: Colors.grey, fontSize: 16),
-                  ),
-                ],
-              );
-            }),
-            const SizedBox(height: 32),
+                    const SizedBox(height: 16),
+                    Text(
+                      user['fullName'] ?? 'المستخدم',
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      user['phone'] ?? '',
+                      style: const TextStyle(color: Colors.grey, fontSize: 16),
+                    ),
+                  ],
+                );
+              }),
+              const SizedBox(height: 32),
 
-            // القائمة
-            _buildListTile(
-              icon: Icons.edit,
-              title: 'تعديل البيانات',
-              onTap: () {
-                // TODO: فتح شاشة تعديل البيانات
-              },
-            ),
-            _buildListTile(
-              icon: Icons.receipt_long,
-              title: 'طلباتي',
-              onTap: () {
-                Get.toNamed(Routes.ORDERS);
-              },
-            ),
-            _buildListTile(
-              icon: Icons.favorite_border,
-              title: 'المفضلات',
-              onTap: () {
-                Get.toNamed(Routes.FAVORITES);
-              },
-            ),
-            _buildListTile(
-              icon: Icons.star_outline,
-              title: 'تقييماتي',
-              onTap: () {
-                Get.toNamed(Routes.REVIEWS);
-              },
-            ),
-            _buildListTile(
-              icon: Icons.support_agent,
-              title: 'الدعم الفني',
-              onTap: () {
-                Get.toNamed(Routes.TICKETS);
-              },
-            ),
-            _buildListTile(
-              icon: Icons.settings_outlined,
-              title: 'الإعدادات',
-              onTap: () {
-                Get.toNamed(Routes.SETTINGS);
-              },
-            ),
-          ],
+              // القائمة
+              _buildListTile(
+                icon: Icons.edit,
+                title: 'تعديل البيانات',
+                onTap: () {
+                  // TODO: فتح شاشة تعديل البيانات
+                },
+              ),
+              _buildListTile(
+                icon: Icons.receipt_long,
+                title: 'طلباتي',
+                onTap: () {
+                  Get.toNamed(Routes.ORDERS);
+                },
+              ),
+              _buildListTile(
+                icon: Icons.favorite_border,
+                title: 'المفضلات',
+                onTap: () {
+                  Get.toNamed(Routes.FAVORITES);
+                },
+              ),
+              _buildListTile(
+                icon: Icons.star_outline,
+                title: 'تقييماتي',
+                onTap: () {
+                  Get.toNamed(Routes.REVIEWS);
+                },
+              ),
+              _buildListTile(
+                icon: Icons.support_agent,
+                title: 'الدعم الفني',
+                onTap: () {
+                  Get.toNamed(Routes.TICKETS);
+                },
+              ),
+              _buildListTile(
+                icon: Icons.settings_outlined,
+                title: 'الإعدادات',
+                onTap: () {
+                  Get.toNamed(Routes.SETTINGS);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
