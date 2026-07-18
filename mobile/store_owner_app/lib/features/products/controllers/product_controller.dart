@@ -32,15 +32,35 @@ class ProductController extends GetxController {
   }
 
   // إضافة منتج جديد
-  Future<void> addProduct(Map<String, dynamic> productData) async {
+  Future<void> addProduct(Map<String, dynamic> productData, {Function? onSuccessClear}) async {
     try {
       isSaving.value = true;
 
       final response = await _apiClient.post('/products', data: productData);
-      if (response.statusCode == 201) {
-        Get.snackbar('نجاح', 'تم إضافة المنتج بنجاح');
+      if (response.statusCode == 201 || response.statusCode == 200) {
         fetchMyProducts(); // تحديث القائمة
-        Get.back(); // العودة للشاشة السابقة
+        
+        // إظهار حوار يسأل المستخدم
+        Get.defaultDialog(
+          title: 'تم بنجاح',
+          middleText: 'تم إضافة المنتج بنجاح. هل تريد إضافة منتج آخر؟',
+          textConfirm: 'إضافة منتج آخر',
+          textCancel: 'العودة للقائمة',
+          confirmTextColor: const Color(0xFFFFFFFF),
+          cancelTextColor: const Color(0xFF4F46E5),
+          buttonColor: const Color(0xFF4F46E5),
+          onConfirm: () {
+            Get.back(); // إغلاق الحوار
+            // سنقوم بتفريغ الحقول من الشاشة نفسها
+            if (onSuccessClear != null) {
+              onSuccessClear();
+            }
+          },
+          onCancel: () {
+            Get.back(); // إغلاق الحوار
+            Get.back(); // إغلاق شاشة إضافة المنتج والعودة للقائمة
+          },
+        );
       }
     } catch (e) {
       Get.snackbar('خطأ', 'حدث خطأ أثناء إضافة المنتج');

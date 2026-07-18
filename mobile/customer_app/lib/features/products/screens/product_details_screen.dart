@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -71,10 +72,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               Container(
                 height: 250,
                 width: double.infinity,
-                color: Colors.grey[200],
-                child: const Center(
-                  child: Icon(Icons.image, size: 100, color: Colors.grey),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  image: product['images'] != null && product['images'].isNotEmpty
+                      ? DecorationImage(
+                          image: product['images'][0].startsWith('data:image')
+                              ? MemoryImage(base64Decode(product['images'][0].split(',')[1])) as ImageProvider
+                              : NetworkImage(product['images'][0]),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
                 ),
+                child: product['images'] == null || product['images'].isEmpty
+                    ? const Center(
+                        child: Icon(Icons.image, size: 100, color: Colors.grey),
+                      )
+                    : null,
               ),
 
               Padding(

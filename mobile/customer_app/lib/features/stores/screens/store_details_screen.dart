@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -303,10 +304,20 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                                   borderRadius: const BorderRadius.vertical(
                                     top: Radius.circular(12),
                                   ),
+                                  image: product['images'] != null && product['images'].isNotEmpty
+                                      ? DecorationImage(
+                                          image: product['images'][0].startsWith('data:image')
+                                              ? MemoryImage(base64Decode(product['images'][0].split(',')[1])) as ImageProvider
+                                              : NetworkImage(product['images'][0]),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : null,
                                 ),
-                                child: const Center(
-                                  child: Icon(Icons.image, color: Colors.grey),
-                                ),
+                                child: product['images'] == null || product['images'].isEmpty
+                                    ? const Center(
+                                        child: Icon(Icons.image, color: Colors.grey),
+                                      )
+                                    : null,
                               ),
                             ),
                             Padding(

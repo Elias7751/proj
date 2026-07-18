@@ -5,6 +5,7 @@ import '../controllers/product_controller.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class AddEditProductScreen extends StatefulWidget {
   const AddEditProductScreen({super.key});
@@ -33,16 +34,40 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
   Future<void> _pickImage() async {
     final XFile? image = await _picker.pickImage(
       source: ImageSource.gallery,
-      imageQuality: 50, // تقليل الجودة لتقليل الحجم
-      maxWidth: 800, // تصغير الأبعاد
     );
 
     if (image != null) {
-      setState(() {
-        _selectedImage = File(image.path);
-      });
-      final bytes = await _selectedImage!.readAsBytes();
-      _base64Image = 'data:image/jpeg;base64,${base64Encode(bytes)}';
+      // قص الصورة
+      final CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'قص الصورة',
+            toolbarColor: const Color(0xFF4F46E5),
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false,
+          ),
+          IOSUiSettings(
+            title: 'قص الصورة',
+          ),
+        ],
+      );
+
+      if (croppedFile != null) {
+        setState(() {
+          _selectedImage = File(croppedFile.path);
+        });
+        final bytes = await _selectedImage!.readAsBytes();
+        _base64Image = 'data:image/jpeg;base64,${base64Encode(bytes)}';
+      }
     }
   }
 
@@ -362,7 +387,22 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
                             productData,
                           );
                         } else {
-                          productController.addProduct(productData);
+                          productController.addProduct(
+                            productData,
+                            onSuccessClear: () {
+                              // تفريغ الحقول لإضافة منتج جديد
+                              nameController.clear();
+                              priceController.clear();
+                              descriptionController.clear();
+                              setState(() {
+                                _selectedImage = null;
+                                _base64Image = null;
+                                _existingImages = [];
+                                _variants = [];
+                                isActive = true;
+                              });
+                            },
+                          );
                         }
                       },
                 style: ElevatedButton.styleFrom(

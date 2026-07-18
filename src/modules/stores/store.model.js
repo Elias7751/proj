@@ -63,6 +63,14 @@ const Store = sequelize.define('Store', {
         type: DataTypes.TEXT,
         allowNull: true
     },
+    returnPolicy: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    termsAndConditions: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
     socialLinks: {
         type: DataTypes.JSON, // لتخزين روابط التواصل الاجتماعي مثل { facebook: "...", instagram: "..." }
         allowNull: true

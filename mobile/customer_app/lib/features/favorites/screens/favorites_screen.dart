@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -62,8 +63,18 @@ class FavoritesScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(8),
+                            image: product['images'] != null && product['images'].isNotEmpty
+                                ? DecorationImage(
+                                    image: product['images'][0].startsWith('data:image')
+                                        ? MemoryImage(base64Decode(product['images'][0].split(',')[1])) as ImageProvider
+                                        : NetworkImage(product['images'][0]),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
                           ),
-                          child: const Icon(Icons.image, color: Colors.grey),
+                          child: product['images'] == null || product['images'].isEmpty
+                              ? const Icon(Icons.image, color: Colors.grey)
+                              : null,
                         ),
                         const SizedBox(width: 16),
                         Expanded(
