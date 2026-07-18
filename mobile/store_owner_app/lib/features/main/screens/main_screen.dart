@@ -5,7 +5,7 @@ import '../../auth/controllers/auth_controller.dart';
 import '../../dashboard/screens/dashboard_screen.dart';
 import '../../orders/screens/orders_screen.dart';
 import '../../products/screens/products_screen.dart';
-import '../../store_settings/screens/store_settings_screen.dart';
+import '../../store_settings/screens/app_settings_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -19,7 +19,7 @@ class MainScreen extends StatelessWidget {
       const DashboardScreen(),
       const OrdersScreen(),
       const ProductsScreen(),
-      const StoreSettingsScreen(),
+      const AppSettingsScreen(),
     ];
 
     return Scaffold(
@@ -136,13 +136,13 @@ class MainScreen extends StatelessWidget {
               BottomNavigationBarItem(
                 icon: Padding(
                   padding: EdgeInsets.only(bottom: 4),
-                  child: Icon(Icons.storefront_outlined),
+                  child: Icon(Icons.settings_outlined),
                 ),
                 activeIcon: Padding(
                   padding: EdgeInsets.only(bottom: 4),
-                  child: Icon(Icons.storefront),
+                  child: Icon(Icons.settings),
                 ),
-                label: 'متجري',
+                label: 'الإعدادات',
               ),
             ],
           ),

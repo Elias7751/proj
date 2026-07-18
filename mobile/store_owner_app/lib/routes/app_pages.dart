@@ -10,6 +10,7 @@ import '../features/orders/screens/orders_screen.dart';
 import '../features/orders/screens/order_details_screen.dart';
 import '../features/store_settings/screens/store_settings_screen.dart';
 import '../features/store_settings/screens/subscriptions_screen.dart';
+import '../features/store_settings/screens/app_settings_screen.dart';
 import '../features/main/screens/main_screen.dart';
 import '../features/offers_ads/screens/offers_screen.dart';
 import '../features/notifications/screens/notifications_screen.dart';
@@ -48,5 +49,6 @@ class AppPages {
     GetPage(name: Routes.ONBOARDING, page: () => const OnboardingScreen()),
     GetPage(name: Routes.PENDING_APPROVAL, page: () => const PendingApprovalScreen()),
     GetPage(name: Routes.NOTIFICATIONS, page: () => const NotificationsScreen()),
+    GetPage(name: Routes.APP_SETTINGS, page: () => const AppSettingsScreen()),
   ];
 }

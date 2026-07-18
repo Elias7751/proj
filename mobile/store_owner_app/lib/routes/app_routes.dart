@@ -16,4 +16,5 @@ abstract class Routes {
   static const ONBOARDING = '/onboarding';
   static const PENDING_APPROVAL = '/pending-approval';
   static const NOTIFICATIONS = '/notifications';
+  static const APP_SETTINGS = '/app-settings';
 }

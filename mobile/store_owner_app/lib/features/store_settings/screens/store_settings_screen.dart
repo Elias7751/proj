@@ -26,6 +26,8 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
   final TextEditingController deliveryFeeController = TextEditingController();
   final TextEditingController whatsappController = TextEditingController();
   final TextEditingController deliveryPolicyController = TextEditingController();
+  final TextEditingController returnPolicyController = TextEditingController();
+  final TextEditingController termsAndConditionsController = TextEditingController();
 
   final TextEditingController facebookController = TextEditingController();
   final TextEditingController instagramController = TextEditingController();
@@ -109,6 +111,8 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
         deliveryFeeController.text = store['deliveryFee']?.toString() ?? '0';
         whatsappController.text = store['whatsappNumber'] ?? '';
         deliveryPolicyController.text = store['deliveryPolicy'] ?? '';
+        returnPolicyController.text = store['returnPolicy'] ?? '';
+        termsAndConditionsController.text = store['termsAndConditions'] ?? '';
         
         _existingLogo = store['logo'];
         _existingCover = store['cover'];
@@ -358,7 +362,35 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                   controller: deliveryPolicyController,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    labelText: 'سياسة التوصيل والاسترجاع الخاصة بالمتجر',
+                    labelText: 'سياسة التوصيل',
+                    labelStyle: GoogleFonts.cairo(),
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                TextFormField(
+                  controller: returnPolicyController,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    labelText: 'سياسة الاسترجاع والاستبدال',
+                    labelStyle: GoogleFonts.cairo(),
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                TextFormField(
+                  controller: termsAndConditionsController,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    labelText: 'الشروط والأحكام الخاصة بالمتجر',
                     labelStyle: GoogleFonts.cairo(),
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(
@@ -441,6 +473,8 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                               'description': descriptionController.text,
                               'whatsappNumber': whatsappController.text,
                               'deliveryPolicy': deliveryPolicyController.text,
+                              'returnPolicy': returnPolicyController.text,
+                              'termsAndConditions': termsAndConditionsController.text,
                               'minOrderAmount': double.tryParse(minOrderController.text) ?? 0.0,
                               'deliveryFee': double.tryParse(deliveryFeeController.text) ?? 0.0,
                               'socialLinks': {

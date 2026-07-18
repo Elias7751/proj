@@ -187,7 +187,7 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                       const Divider(),
                       const SizedBox(height: 8),
                       Text(
-                        'سياسة التوصيل والاسترجاع',
+                        'سياسة التوصيل',
                         style: GoogleFonts.cairo(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -196,6 +196,50 @@ class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
                       const SizedBox(height: 4),
                       Text(
                         store['deliveryPolicy'],
+                        style: GoogleFonts.cairo(
+                          color: Colors.grey[600],
+                          fontSize: 13,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+
+                    // سياسة الاسترجاع
+                    if (store['returnPolicy']?.isNotEmpty == true) ...[
+                      const Divider(),
+                      const SizedBox(height: 8),
+                      Text(
+                        'سياسة الاسترجاع والاستبدال',
+                        style: GoogleFonts.cairo(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        store['returnPolicy'],
+                        style: GoogleFonts.cairo(
+                          color: Colors.grey[600],
+                          fontSize: 13,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+
+                    // الشروط والأحكام
+                    if (store['termsAndConditions']?.isNotEmpty == true) ...[
+                      const Divider(),
+                      const SizedBox(height: 8),
+                      Text(
+                        'الشروط والأحكام',
+                        style: GoogleFonts.cairo(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        store['termsAndConditions'],
                         style: GoogleFonts.cairo(
                           color: Colors.grey[600],
                           fontSize: 13,

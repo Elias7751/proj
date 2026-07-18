@@ -62,14 +62,17 @@ exports.subscribeToPlan = asyncHandler(async (req, res, next) => {
     const endDate = new Date();
     endDate.setDate(endDate.getDate() + plan.durationDays);
 
+    const isFree = parseFloat(plan.price) === 0;
+
     const subscription = await StoreSubscription.create({
         storeId: store.id,
         planId: plan.id,
         endDate,
-        paymentStatus: 'pending' // يمكن تغييره إلى paid بعد الدفع
+        paymentStatus: isFree ? 'paid' : 'pending',
+        status: 'active'
     });
 
-    res.status(201).json(new ApiResponse(201, subscription, 'تم تسجيل الاشتراك بنجاح، بانتظار الدفع'));
+    res.status(201).json(new ApiResponse(201, subscription, isFree ? 'تم تفعيل الخطة المجانية بنجاح' : 'تم تسجيل الاشتراك بنجاح، يرجى التواصل مع الدعم لتأكيد الدفع'));
 });
 
 // @desc    جلب اشتراك المتجر الحالي
