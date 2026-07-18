@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../auth/controllers/auth_controller.dart';
 import '../../../routes/app_pages.dart';
+import 'policy_screen.dart';
 
 class AppSettingsScreen extends StatelessWidget {
   const AppSettingsScreen({super.key});
@@ -16,29 +17,6 @@ class AppSettingsScreen extends StatelessWidget {
     } catch (e) {
       Get.snackbar('تنبيه', 'تعذر فتح الرابط');
     }
-  }
-
-  void _showInfoDialog(String title, String content) {
-    Get.dialog(
-      AlertDialog(
-        title: Text(
-          title,
-          style: GoogleFonts.cairo(fontWeight: FontWeight.bold),
-        ),
-        content: SingleChildScrollView(
-          child: Text(
-            content,
-            style: GoogleFonts.cairo(fontSize: 14, height: 1.5),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: Text('حسناً', style: GoogleFonts.cairo()),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -128,13 +106,13 @@ class AppSettingsScreen extends StatelessWidget {
                   title: Text('شروط وأحكام المنصة', style: GoogleFonts.cairo()),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
-                    _showInfoDialog(
-                      'شروط وأحكام المنصة',
-                      '1. يلتزم التاجر بتقديم منتجات مطابقة للوصف.\n'
-                      '2. يمنع بيع المنتجات المحظورة قانونياً.\n'
-                      '3. المنصة غير مسؤولة عن أي خلاف مالي بين التاجر والعميل خارج نطاق المنصة.\n'
-                      '4. يحق للمنصة إيقاف أي متجر يخالف الشروط.',
-                    );
+                    Get.to(() => const PolicyScreen(
+                      title: 'شروط وأحكام المنصة',
+                      content: '1. يلتزم التاجر بتقديم منتجات مطابقة للوصف.\n\n'
+                               '2. يمنع بيع المنتجات المحظورة قانونياً.\n\n'
+                               '3. المنصة غير مسؤولة عن أي خلاف مالي بين التاجر والعميل خارج نطاق المنصة.\n\n'
+                               '4. يحق للمنصة إيقاف أي متجر يخالف الشروط.',
+                    ));
                   },
                 ),
                 const Divider(height: 1),
@@ -143,10 +121,10 @@ class AppSettingsScreen extends StatelessWidget {
                   title: Text('سياسة الخصوصية', style: GoogleFonts.cairo()),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
-                    _showInfoDialog(
-                      'سياسة الخصوصية',
-                      'نحن نحترم خصوصيتك. يتم تشفير بياناتك ولا يتم مشاركتها مع أي طرف ثالث بدون موافقتك. نستخدم بياناتك فقط لتحسين تجربتك في المنصة وتسهيل عمليات البيع والشراء.',
-                    );
+                    Get.to(() => const PolicyScreen(
+                      title: 'سياسة الخصوصية',
+                      content: 'نحن نحترم خصوصيتك. يتم تشفير بياناتك ولا يتم مشاركتها مع أي طرف ثالث بدون موافقتك. نستخدم بياناتك فقط لتحسين تجربتك في المنصة وتسهيل عمليات البيع والشراء.',
+                    ));
                   },
                 ),
               ],
@@ -183,11 +161,13 @@ class AppSettingsScreen extends StatelessWidget {
                   title: Text('الأسئلة الشائعة', style: GoogleFonts.cairo()),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
-                    _showInfoDialog(
-                      'الأسئلة الشائعة',
-                      'س: كيف أضيف منتج؟\nج: من لوحة التحكم، اضغط على "المنتجات" ثم "إضافة منتج".\n\n'
-                      'س: كيف أغير باقتي؟\nج: من الإعدادات > إدارة الاشتراكات والخطط.',
-                    );
+                    Get.to(() => const PolicyScreen(
+                      title: 'الأسئلة الشائعة',
+                      content: 'س: كيف أضيف منتج؟\n'
+                               'ج: من لوحة التحكم، اضغط على "المنتجات" ثم "إضافة منتج".\n\n'
+                               'س: كيف أغير باقتي؟\n'
+                               'ج: من الإعدادات > إدارة الاشتراكات والخطط.',
+                    ));
                   },
                 ),
               ],

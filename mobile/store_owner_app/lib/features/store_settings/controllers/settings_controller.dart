@@ -55,14 +55,20 @@ class SettingsController extends GetxController {
     try {
       // جلب الاشتراك الحالي
       final subResponse = await _apiClient.get('/subscriptions/my');
-      if (subResponse.statusCode == 200) {
+      if (subResponse.statusCode == 200 && subResponse.data['data'] != null) {
         currentSubscription.value = subResponse.data['data'];
+      } else {
+        currentSubscription.value = {};
       }
+    } catch (e) {
+      currentSubscription.value = {};
+    }
 
+    try {
       // جلب الباقات المتاحة
       final plansResponse = await _apiClient.get('/subscriptions/plans');
       if (plansResponse.statusCode == 200) {
-        availablePlans.value = plansResponse.data['data'];
+        availablePlans.value = plansResponse.data['data'] ?? [];
       }
     } catch (e) {
       // تجاهل الأخطاء هنا مؤقتاً

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 import '../../../core/network/api_client.dart';
 
 class ProductController extends GetxController {
@@ -46,9 +47,9 @@ class ProductController extends GetxController {
           middleText: 'تم إضافة المنتج بنجاح. هل تريد إضافة منتج آخر؟',
           textConfirm: 'إضافة منتج آخر',
           textCancel: 'العودة للقائمة',
-          confirmTextColor: const Color(0xFFFFFFFF),
-          cancelTextColor: const Color(0xFF4F46E5),
-          buttonColor: const Color(0xFF4F46E5),
+          confirmTextColor: Color(0xFFFFFFFF),
+          cancelTextColor: Color(0xFF4F46E5),
+          buttonColor: Color(0xFF4F46E5),
           onConfirm: () {
             Get.back(); // إغلاق الحوار
             // سنقوم بتفريغ الحقول من الشاشة نفسها

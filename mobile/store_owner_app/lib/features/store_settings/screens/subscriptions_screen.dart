@@ -4,6 +4,7 @@ import '../controllers/settings_controller.dart';
 import '../../auth/controllers/auth_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:convert';
 
 class SubscriptionsScreen extends StatelessWidget {
   const SubscriptionsScreen({super.key});
