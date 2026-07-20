@@ -4,7 +4,7 @@ import api from '../api/axios';
 
 const Settings = () => {
   const [settings, setSettings] = useState({
-    platformName: 'السوق اليمني',
+    platformName: 'Sellink',
     whatsappMessage: 'مرحباً، أريد الاستفسار عن هذا المنتج:',
     countryCode: '+967',
     enableRegistration: true,

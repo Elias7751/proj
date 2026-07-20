@@ -6,7 +6,7 @@ const Sidebar = ({ onLogout }) => {
     return (
         <aside className="sidebar">
             <div style={{ marginBottom: '40px', textAlign: 'center' }}>
-                <h2 style={{ color: 'var(--primary-color)', fontSize: '24px' }}>السوق اليمني</h2>
+                <h2 style={{ color: 'var(--primary-color)', fontSize: '24px' }}>Sellink</h2>
                 <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>لوحة تحكم الإدارة</p>
             </div>
 

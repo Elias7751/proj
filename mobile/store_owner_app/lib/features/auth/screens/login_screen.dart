@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/auth_controller.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/widgets/sellink_logo.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -39,13 +40,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(60),
-                    child: Image.asset(
-                      'assets/images/logo.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                  child: const SellinkLogo(size: 120),
                 ).animate()
                  .scale(duration: 600.ms, curve: Curves.easeOutBack)
                  .fadeIn(duration: 600.ms),

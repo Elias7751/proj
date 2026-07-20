@@ -25,8 +25,8 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         title: const Text(
-          'السوق اليمني',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          'Sellink',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 24),
         ),
         actions: [
           IconButton(

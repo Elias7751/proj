@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/auth_controller.dart';
+import '../../../core/widgets/sellink_logo.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -23,14 +24,12 @@ class LoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Icon(
-                Icons.shopping_bag_outlined,
-                size: 100,
-                color: Color(0xFF6366F1),
+              const Center(
+                child: SellinkLogo(size: 120),
               ),
               const SizedBox(height: 32),
               Text(
-                'مرحباً بك في السوق اليمني',
+                'مرحباً بك في Sellink',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

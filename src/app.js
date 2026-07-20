@@ -42,7 +42,7 @@ const routes = require('./routes');
 
 // Basic Route
 app.get('/', (req, res) => {
-  res.json({ message: 'مرحباً بك في منصة السوق اليمني API' });
+  res.json({ message: 'مرحباً بك في منصة Sellink API' });
 });
 
 // Temporary route to seed admin and default data

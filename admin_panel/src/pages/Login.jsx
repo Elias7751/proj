@@ -58,7 +58,7 @@ const Login = ({ onLoginSuccess }) => {
                 textAlign: 'center'
             }}>
                 <div style={{ marginBottom: '32px' }}>
-                    <h1 style={{ color: 'var(--primary-color)', fontSize: '32px', marginBottom: '8px', fontWeight: '800' }}>السوق اليمني</h1>
+                    <h1 style={{ color: 'var(--primary-color)', fontSize: '32px', marginBottom: '8px', fontWeight: '800' }}>Sellink</h1>
                     <p style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px' }}>لوحة تحكم الإدارة والمشرفين</p>
                 </div>
 
