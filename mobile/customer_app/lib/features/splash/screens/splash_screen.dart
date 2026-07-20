@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../routes/app_pages.dart';
 import '../../auth/controllers/auth_controller.dart';
-import '../../../core/constants/logo_base64.dart';
+import '../../../core/widgets/sellink_logo.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -100,13 +100,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                             ),
                           ],
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(75),
-                          child: Image.memory(
-                            base64Decode(sellinkLogoBase64),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                        child: const SellinkLogo(size: 150),
                       ),
                       const SizedBox(height: 30),
                       // App Name
