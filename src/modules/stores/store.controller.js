@@ -6,6 +6,7 @@ const Area = require('../cities/area.model');
 const ApiError = require('../../utils/ApiError');
 const ApiResponse = require('../../utils/ApiResponse');
 const asyncHandler = require('../../utils/asyncHandler');
+const { clearCache } = require('../../middleware/cache');
 
 // دالة مساعدة لتحويل النص إلى slug
 const slugify = (text) => {
@@ -124,6 +125,9 @@ exports.createStore = asyncHandler(async (req, res, next) => {
         req
     });
 
+    // مسح الكاش
+    await clearCache('cache:/api/v1/stores*');
+
     res.status(201).json(
         new ApiResponse(201, store, req.user.role === 'admin' ? 'تم إنشاء وتفعيل المتجر بنجاح' : 'تم تقديم طلب إنشاء المتجر بنجاح وبانتظار مراجعة الإدارة')
     );
@@ -213,6 +217,10 @@ exports.updateStore = asyncHandler(async (req, res, next) => {
     }
 
     const updatedStore = await store.update(req.body);
+
+    // مسح الكاش
+    await clearCache('cache:/api/v1/stores*');
+
     res.status(200).json(new ApiResponse(200, updatedStore, 'تم تحديث بيانات المتجر بنجاح'));
 });
 
@@ -246,5 +254,9 @@ exports.updateMyStore = asyncHandler(async (req, res, next) => {
     }
 
     const updatedStore = await store.update(req.body);
+
+    // مسح الكاش
+    await clearCache('cache:/api/v1/stores*');
+
     res.status(200).json(new ApiResponse(200, updatedStore, 'تم تحديث بيانات المتجر بنجاح'));
 });

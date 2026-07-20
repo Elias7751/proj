@@ -2,6 +2,7 @@ const Category = require('./category.model');
 const ApiError = require('../../utils/ApiError');
 const ApiResponse = require('../../utils/ApiResponse');
 const asyncHandler = require('../../utils/asyncHandler');
+const { clearCache } = require('../../middleware/cache');
 
 // دالة مساعدة لتحويل النص إلى slug متوافق مع الروابط
 const slugify = (text) => {
@@ -56,6 +57,9 @@ exports.createCategory = asyncHandler(async (req, res, next) => {
         sortOrder: sortOrder || 0,
         image
     });
+
+    // مسح الكاش
+    await clearCache('cache:/api/v1/categories*');
 
     res.status(201).json(new ApiResponse(201, category, 'تم إنشاء التصنيف بنجاح'));
 });
