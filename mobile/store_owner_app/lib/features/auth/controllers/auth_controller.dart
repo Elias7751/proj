@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import '../../../core/network/api_client.dart';
+import '../../../core/services/firebase_messaging_service.dart';
 import '../../../routes/app_pages.dart';
 
 class AuthController extends GetxController {
@@ -16,6 +17,10 @@ class AuthController extends GetxController {
   void onInit() {
     super.onInit();
     checkLoginStatus();
+    
+    // Initialize Firebase Messaging
+    final messagingService = FirebaseMessagingService();
+    messagingService.init();
   }
 
   Future<void> checkLoginStatus() async {
