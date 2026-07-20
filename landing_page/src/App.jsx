@@ -306,7 +306,7 @@ function App() {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/v1/settings');
+        const res = await axios.get('https://shop-tcqs.onrender.com/api/v1/settings');
         setSettings(res.data.data);
       } catch (error) {
         console.error('Failed to fetch settings', error);

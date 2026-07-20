@@ -22,7 +22,7 @@ const LegalSettings = () => {
 
     const fetchSettings = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/v1/settings');
+            const res = await axios.get('https://shop-tcqs.onrender.com/api/v1/settings');
             const data = res.data.data;
             setSettings({
                 privacy_policy: data.privacy_policy || '',
@@ -42,7 +42,7 @@ const LegalSettings = () => {
         setSaving(true);
         try {
             const token = localStorage.getItem('token');
-            await axios.put('http://localhost:5000/api/v1/settings', settings, {
+            await axios.put('https://shop-tcqs.onrender.com/api/v1/settings', settings, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             toast.success('تم حفظ الإعدادات بنجاح');
