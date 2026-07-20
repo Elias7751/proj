@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
 import '../../../routes/app_pages.dart';
+import '../../notifications/controllers/notification_controller.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -33,10 +34,44 @@ class HomeScreen extends StatelessWidget {
             icon: const Icon(Icons.search, color: Colors.white),
             onPressed: () {},
           ),
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined, color: Colors.white),
-            onPressed: () {},
-          ),
+          Obx(() {
+            final notificationController = Get.put(NotificationController());
+            return Stack(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.notifications_outlined, color: Colors.white),
+                  onPressed: () {
+                    Get.toNamed(Routes.NOTIFICATIONS);
+                  },
+                ),
+                if (notificationController.unreadCount.value > 0)
+                  Positioned(
+                    right: 8,
+                    top: 8,
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 16,
+                        minHeight: 16,
+                      ),
+                      child: Text(
+                        '${notificationController.unreadCount.value}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          }),
         ],
       ),
       body: Obx(() {

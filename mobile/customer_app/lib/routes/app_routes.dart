@@ -20,4 +20,5 @@ abstract class Routes {
   static const SETTINGS = '/settings';
   static const TICKETS = '/tickets';
   static const CREATE_TICKET = '/create-ticket';
+  static const NOTIFICATIONS = '/notifications';
 }

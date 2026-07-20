@@ -18,6 +18,7 @@ import '../features/profile/screens/create_ticket_screen.dart';
 import '../features/splash/screens/splash_screen.dart';
 import '../features/main/screens/main_screen.dart';
 import '../features/favorites/screens/favorites_screen.dart';
+import '../features/notifications/screens/notifications_screen.dart';
 
 part 'app_routes.dart';
 
@@ -47,5 +48,6 @@ class AppPages {
     GetPage(name: Routes.SETTINGS, page: () => const SettingsScreen()),
     GetPage(name: Routes.TICKETS, page: () => const TicketsScreen()),
     GetPage(name: Routes.CREATE_TICKET, page: () => const CreateTicketScreen()),
+    GetPage(name: Routes.NOTIFICATIONS, page: () => const NotificationsScreen()),
   ];
 }
