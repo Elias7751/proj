@@ -4,6 +4,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, Float, PresentationControls, ContactShadows } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import { ShoppingBag, Store, Zap, Shield, Smartphone, ArrowLeft, CheckCircle, MapPin, CreditCard, Bell } from 'lucide-react';
+import axios from 'axios';
 import './index.css';
 
 // 3D Abstract Shape Component
@@ -156,136 +157,176 @@ const Home = () => (
 );
 
 // Customer Guide Page
-const CustomerGuide = () => (
+const CustomerGuide = ({ content }) => (
   <div className="page-container">
     <div className="container">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="page-header">
         <h1>دليل <span className="text-gradient">العميل</span></h1>
-        <p>كل ما تحتاجه للبدء في التسوق عبر منصة Sellink</p>
       </motion.div>
 
-      <div className="steps-grid">
-        {[
-          { icon: <Smartphone />, title: '1. تحميل التطبيق', desc: 'قم بتحميل تطبيق Sellink للعملاء من متجر التطبيقات وإنشاء حساب جديد برقم هاتفك.' },
-          { icon: <MapPin />, title: '2. تحديد الموقع', desc: 'حدد موقعك بدقة لكي نعرض لك المتاجر المتاحة للتوصيل في منطقتك.' },
-          { icon: <ShoppingBag />, title: '3. تصفح وتسوق', desc: 'تصفح آلاف المنتجات من مختلف المتاجر وأضف ما يعجبك إلى سلة المشتريات.' },
-          { icon: <CreditCard />, title: '4. إتمام الطلب', desc: 'اختر طريقة الدفع المناسبة (الدفع عند الاستلام متاح) وقم بتأكيد طلبك.' },
-          { icon: <Bell />, title: '5. تتبع الطلب', desc: 'ستصلك إشعارات لحظية بحالة طلبك حتى يصل إلى باب منزلك.' }
-        ].map((step, index) => (
-          <motion.div key={index} className="step-card glass" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }}>
-            <div className="step-icon">{step.icon}</div>
-            <div className="step-content">
-              <h3>{step.title}</h3>
-              <p>{step.desc}</p>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+      {content ? (
+        <div className="policy-content glass" dangerouslySetInnerHTML={{ __html: content }} />
+      ) : (
+        <div className="steps-grid">
+          {[
+            { icon: <Smartphone />, title: '1. تحميل التطبيق', desc: 'قم بتحميل تطبيق Sellink للعملاء من متجر التطبيقات وإنشاء حساب جديد برقم هاتفك.' },
+            { icon: <MapPin />, title: '2. تحديد الموقع', desc: 'حدد موقعك بدقة لكي نعرض لك المتاجر المتاحة للتوصيل في منطقتك.' },
+            { icon: <ShoppingBag />, title: '3. تصفح وتسوق', desc: 'تصفح آلاف المنتجات من مختلف المتاجر وأضف ما يعجبك إلى سلة المشتريات.' },
+            { icon: <CreditCard />, title: '4. إتمام الطلب', desc: 'اختر طريقة الدفع المناسبة (الدفع عند الاستلام متاح) وقم بتأكيد طلبك.' },
+            { icon: <Bell />, title: '5. تتبع الطلب', desc: 'ستصلك إشعارات لحظية بحالة طلبك حتى يصل إلى باب منزلك.' }
+          ].map((step, index) => (
+            <motion.div key={index} className="step-card glass" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }}>
+              <div className="step-icon">{step.icon}</div>
+              <div className="step-content">
+                <h3>{step.title}</h3>
+                <p>{step.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
     </div>
   </div>
 );
 
 // Merchant Guide Page
-const MerchantGuide = () => (
+const MerchantGuide = ({ content }) => (
   <div className="page-container">
     <div className="container">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="page-header">
         <h1>دليل <span className="text-gradient">التاجر</span></h1>
-        <p>انطلق بتجارتك نحو آفاق جديدة مع تطبيق Sellink Business</p>
       </motion.div>
 
-      <div className="steps-grid">
-        {[
-          { icon: <Store />, title: '1. إنشاء المتجر', desc: 'حمل تطبيق Sellink Business، قم بإنشاء حسابك، وأدخل بيانات متجرك (الاسم، الشعار، الموقع).' },
-          { icon: <CheckCircle />, title: '2. انتظار الموافقة', desc: 'سيقوم فريق الإدارة بمراجعة طلبك وتوثيق متجرك في أسرع وقت.' },
-          { icon: <ShoppingBag />, title: '3. إضافة المنتجات', desc: 'بعد الموافقة، ابدأ بإضافة منتجاتك مع الصور والأسعار والتفاصيل الجذابة.' },
-          { icon: <Bell />, title: '4. استقبال الطلبات', desc: 'ستصلك إشعارات فورية عند قيام أي عميل بالطلب من متجرك.' },
-          { icon: <Zap />, title: '5. إدارة المبيعات', desc: 'قم بتحديث حالة الطلبات (قيد التجهيز، جاري التوصيل) وتابع أرباحك من خلال لوحة التحكم.' }
-        ].map((step, index) => (
-          <motion.div key={index} className="step-card glass" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }}>
-            <div className="step-icon">{step.icon}</div>
-            <div className="step-content">
-              <h3>{step.title}</h3>
-              <p>{step.desc}</p>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+      {content ? (
+        <div className="policy-content glass" dangerouslySetInnerHTML={{ __html: content }} />
+      ) : (
+        <div className="steps-grid">
+          {[
+            { icon: <Store />, title: '1. إنشاء المتجر', desc: 'حمل تطبيق Sellink Business، قم بإنشاء حسابك، وأدخل بيانات متجرك (الاسم، الشعار، الموقع).' },
+            { icon: <CheckCircle />, title: '2. انتظار الموافقة', desc: 'سيقوم فريق الإدارة بمراجعة طلبك وتوثيق متجرك في أسرع وقت.' },
+            { icon: <ShoppingBag />, title: '3. إضافة المنتجات', desc: 'بعد الموافقة، ابدأ بإضافة منتجاتك مع الصور والأسعار والتفاصيل الجذابة.' },
+            { icon: <Bell />, title: '4. استقبال الطلبات', desc: 'ستصلك إشعارات فورية عند قيام أي عميل بالطلب من متجرك.' },
+            { icon: <Zap />, title: '5. إدارة المبيعات', desc: 'قم بتحديث حالة الطلبات (قيد التجهيز، جاري التوصيل) وتابع أرباحك من خلال لوحة التحكم.' }
+          ].map((step, index) => (
+            <motion.div key={index} className="step-card glass" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }}>
+              <div className="step-icon">{step.icon}</div>
+              <div className="step-content">
+                <h3>{step.title}</h3>
+                <p>{step.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
     </div>
   </div>
 );
 
 // Privacy Policy Page
-const PrivacyPolicy = () => (
+const PrivacyPolicy = ({ content }) => (
   <div className="page-container">
     <div className="container">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="page-header">
         <h1>سياسة <span className="text-gradient">الخصوصية</span></h1>
-        <p>آخر تحديث: 20 يوليو 2026</p>
       </motion.div>
 
       <div className="policy-content glass">
-        <h2>1. جمع المعلومات</h2>
-        <p>نحن في Sellink نقوم بجمع المعلومات التي تقدمها لنا مباشرة عند إنشاء حساب، مثل الاسم، رقم الهاتف، والعنوان. كما نجمع بيانات الموقع الجغرافي لتقديم خدمة التوصيل بدقة.</p>
+        {content ? (
+          <div dangerouslySetInnerHTML={{ __html: content }} />
+        ) : (
+          <>
+            <h2>1. جمع المعلومات</h2>
+            <p>نحن في Sellink نقوم بجمع المعلومات التي تقدمها لنا مباشرة عند إنشاء حساب، مثل الاسم، رقم الهاتف، والعنوان. كما نجمع بيانات الموقع الجغرافي لتقديم خدمة التوصيل بدقة.</p>
 
-        <h2>2. استخدام المعلومات</h2>
-        <p>نستخدم معلوماتك لتوفير خدماتنا وتحسينها، معالجة طلباتك، التواصل معك بخصوص الطلبات، وإرسال الإشعارات الهامة المتعلقة بحسابك.</p>
+            <h2>2. استخدام المعلومات</h2>
+            <p>نستخدم معلوماتك لتوفير خدماتنا وتحسينها، معالجة طلباتك، التواصل معك بخصوص الطلبات، وإرسال الإشعارات الهامة المتعلقة بحسابك.</p>
 
-        <h2>3. مشاركة المعلومات</h2>
-        <p>لا نقوم ببيع معلوماتك الشخصية لأي طرف ثالث. نشارك فقط المعلومات الضرورية (مثل الاسم والعنوان) مع المتاجر ومندوبي التوصيل لإتمام طلبك بنجاح.</p>
+            <h2>3. مشاركة المعلومات</h2>
+            <p>لا نقوم ببيع معلوماتك الشخصية لأي طرف ثالث. نشارك فقط المعلومات الضرورية (مثل الاسم والعنوان) مع المتاجر ومندوبي التوصيل لإتمام طلبك بنجاح.</p>
 
-        <h2>4. أمن البيانات</h2>
-        <p>نتخذ إجراءات أمنية صارمة لحماية بياناتك من الوصول غير المصرح به أو التعديل أو الإفصاح. نستخدم تشفير البيانات وتأمين الاتصالات.</p>
+            <h2>4. أمن البيانات</h2>
+            <p>نتخذ إجراءات أمنية صارمة لحماية بياناتك من الوصول غير المصرح به أو التعديل أو الإفصاح. نستخدم تشفير البيانات وتأمين الاتصالات.</p>
 
-        <h2>5. حقوقك</h2>
-        <p>يحق لك في أي وقت الوصول إلى بياناتك الشخصية، تعديلها، أو طلب حذف حسابك بالكامل من خلال إعدادات التطبيق.</p>
+            <h2>5. حقوقك</h2>
+            <p>يحق لك في أي وقت الوصول إلى بياناتك الشخصية، تعديلها، أو طلب حذف حسابك بالكامل من خلال إعدادات التطبيق.</p>
+          </>
+        )}
       </div>
     </div>
   </div>
 );
 
 // Terms and Conditions Page
-const TermsConditions = () => (
+const TermsConditions = ({ content }) => (
   <div className="page-container">
     <div className="container">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="page-header">
         <h1>الشروط <span className="text-gradient">والأحكام</span></h1>
-        <p>آخر تحديث: 20 يوليو 2026</p>
       </motion.div>
 
       <div className="policy-content glass">
-        <h2>1. قبول الشروط</h2>
-        <p>باستخدامك لمنصة وتطبيقات Sellink، فإنك توافق على الالتزام بجميع الشروط والأحكام المذكورة هنا. إذا كنت لا توافق على أي جزء منها، يرجى عدم استخدام المنصة.</p>
+        {content ? (
+          <div dangerouslySetInnerHTML={{ __html: content }} />
+        ) : (
+          <>
+            <h2>1. قبول الشروط</h2>
+            <p>باستخدامك لمنصة وتطبيقات Sellink، فإنك توافق على الالتزام بجميع الشروط والأحكام المذكورة هنا. إذا كنت لا توافق على أي جزء منها، يرجى عدم استخدام المنصة.</p>
 
-        <h2>2. حساب المستخدم</h2>
-        <p>أنت مسؤول عن الحفاظ على سرية معلومات حسابك وكلمة المرور. المنصة غير مسؤولة عن أي خسارة ناتجة عن فشلك في حماية بيانات الدخول الخاصة بك.</p>
+            <h2>2. حساب المستخدم</h2>
+            <p>أنت مسؤول عن الحفاظ على سرية معلومات حسابك وكلمة المرور. المنصة غير مسؤولة عن أي خسارة ناتجة عن فشلك في حماية بيانات الدخول الخاصة بك.</p>
 
-        <h2>3. التزامات التاجر</h2>
-        <p>يجب على التجار تقديم معلومات دقيقة عن المنتجات والأسعار. يمنع منعاً باتاً بيع أي منتجات غير قانونية أو مقلدة. يحق لإدارة المنصة إيقاف أي متجر يخالف هذه الشروط.</p>
+            <h2>3. التزامات التاجر</h2>
+            <p>يجب على التجار تقديم معلومات دقيقة عن المنتجات والأسعار. يمنع منعاً باتاً بيع أي منتجات غير قانونية أو مقلدة. يحق لإدارة المنصة إيقاف أي متجر يخالف هذه الشروط.</p>
 
-        <h2>4. سياسة الإرجاع والاسترداد</h2>
-        <p>تخضع سياسة الإرجاع لشروط كل متجر على حدة. المنصة تعمل كوسيط بين العميل والتاجر، وتلتزم بتقديم الدعم لحل أي نزاعات قد تنشأ بين الطرفين.</p>
+            <h2>4. سياسة الإرجاع والاسترداد</h2>
+            <p>تخضع سياسة الإرجاع لشروط كل متجر على حدة. المنصة تعمل كوسيط بين العميل والتاجر، وتلتزم بتقديم الدعم لحل أي نزاعات قد تنشأ بين الطرفين.</p>
 
-        <h2>5. التعديلات</h2>
-        <p>نحتفظ بالحق في تعديل هذه الشروط في أي وقت. سيتم إشعار المستخدمين بأي تغييرات جوهرية، واستمرارك في استخدام المنصة يعني قبولك للشروط المعدلة.</p>
+            <h2>5. التعديلات</h2>
+            <p>نحتفظ بالحق في تعديل هذه الشروط في أي وقت. سيتم إشعار المستخدمين بأي تغييرات جوهرية، واستمرارك في استخدام المنصة يعني قبولك للشروط المعدلة.</p>
+          </>
+        )}
       </div>
     </div>
   </div>
 );
 
+// Scroll to top on route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
+
 // Main App Component
 function App() {
+  const [settings, setSettings] = useState({});
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/v1/settings');
+        setSettings(res.data.data);
+      } catch (error) {
+        console.error('Failed to fetch settings', error);
+      }
+    };
+    fetchSettings();
+  }, []);
+
   return (
     <Router>
+      <ScrollToTop />
       <div className="app-wrapper">
         <Navbar />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/customer-guide" element={<CustomerGuide />} />
-            <Route path="/merchant-guide" element={<MerchantGuide />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-conditions" element={<TermsConditions />} />
+            <Route path="/customer-guide" element={<CustomerGuide content={settings.customer_guide} />} />
+            <Route path="/merchant-guide" element={<MerchantGuide content={settings.merchant_guide} />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy content={settings.privacy_policy} />} />
+            <Route path="/terms-conditions" element={<TermsConditions content={settings.terms_conditions} />} />
           </Routes>
         </main>
         <Footer />

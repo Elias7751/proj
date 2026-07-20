@@ -12,6 +12,7 @@ import Reports from './pages/Reports';
 import Logs from './pages/Logs';
 import Admins from './pages/Admins';
 import Settings from './pages/Settings';
+import LegalSettings from './pages/LegalSettings';
 import Login from './pages/Login';
 import FeaturedStores from './pages/FeaturedStores';
 import Banners from './pages/Banners';
@@ -55,6 +56,7 @@ function App() {
             <Route path="/logs" element={<Logs />} />
             <Route path="/admins" element={<Admins />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/legal-settings" element={<LegalSettings />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

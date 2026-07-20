@@ -71,6 +71,10 @@ const Sidebar = ({ onLogout }) => {
                     <Settings size={20} />
                     <span>إعدادات النظام</span>
                 </NavLink>
+                <NavLink to="/legal-settings" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+                    <FileText size={20} />
+                    <span>الصفحات القانونية</span>
+                </NavLink>
             </nav>
 
             <button onClick={onLogout} className="btn btn-danger" style={{ width: '100%', marginTop: 'auto' }}>
