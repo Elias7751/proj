@@ -1,4 +1,4 @@
-package com.example.store_owner_app
+package com.sellink.storeowner
 
 import io.flutter.embedding.android.FlutterActivity
 
