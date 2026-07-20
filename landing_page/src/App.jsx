@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, Float, PresentationControls, ContactShadows } from '@react-three/drei';
 import { motion } from 'framer-motion';
-import { ShoppingBag, Store, Zap, Shield, Smartphone, ArrowLeft, CheckCircle, MapPin, CreditCard, Bell } from 'lucide-react';
+import { ShoppingBag, Store, Zap, Shield, Smartphone, ArrowLeft, CheckCircle, MapPin, CreditCard, Bell, Sun, Moon } from 'lucide-react';
 import axios from 'axios';
 import './index.css';
 
@@ -37,7 +37,7 @@ const AbstractShape = () => {
 };
 
 // Navbar Component
-const Navbar = () => {
+const Navbar = ({ theme, toggleTheme }) => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
@@ -57,6 +57,13 @@ const Navbar = () => {
           <Link to="/" className={location.pathname === '/' ? 'active' : ''}>الرئيسية</Link>
           <Link to="/customer-guide" className={location.pathname === '/customer-guide' ? 'active' : ''}>دليل العميل</Link>
           <Link to="/merchant-guide" className={location.pathname === '/merchant-guide' ? 'active' : ''}>دليل التاجر</Link>
+          <button
+            onClick={toggleTheme}
+            style={{ background: 'transparent', border: 'none', color: 'var(--text-light)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+            title={theme === 'dark' ? 'الوضع النهاري' : 'الوضع الليلي'}
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
         </div>
       </div>
     </nav>
@@ -302,6 +309,20 @@ const ScrollToTop = () => {
 // Main App Component
 function App() {
   const [settings, setSettings] = useState({});
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.body.classList.add('light-mode');
+    } else {
+      document.body.classList.remove('light-mode');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -319,7 +340,7 @@ function App() {
     <Router>
       <ScrollToTop />
       <div className="app-wrapper">
-        <Navbar />
+        <Navbar theme={theme} toggleTheme={toggleTheme} />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />

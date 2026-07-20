@@ -8,6 +8,23 @@
   --bg-card: rgba(30, 41, 59, 0.7);
   --text-light: #F8FAFC;
   --text-muted: #94A3B8;
+  --nav-bg: rgba(15, 23, 42, 0.8);
+  --footer-bg: rgba(15, 23, 42, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --btn-outline-border: rgba(255, 255, 255, 0.2);
+  --btn-outline-hover: rgba(255, 255, 255, 0.1);
+}
+
+body.light-mode {
+  --bg-dark: #F8FAFC;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --text-light: #0F172A;
+  --text-muted: #475569;
+  --nav-bg: rgba(255, 255, 255, 0.8);
+  --footer-bg: rgba(241, 245, 249, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --btn-outline-border: rgba(0, 0, 0, 0.2);
+  --btn-outline-hover: rgba(0, 0, 0, 0.05);
 }
 
 * {
@@ -29,7 +46,7 @@ body {
   background: var(--bg-card);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
   border-radius: 24px;
 }
 
@@ -81,13 +98,13 @@ body {
 
 .btn-outline {
   background: transparent;
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-light);
+  border: 2px solid var(--btn-outline-border);
 }
 
 .btn-outline:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: var(--btn-outline-hover);
+  border-color: var(--primary);
 }
 
 /* Canvas Container for 3D */
@@ -148,9 +165,9 @@ body {
 }
 
 .navbar.scrolled {
-  background: rgba(15, 23, 42, 0.8);
+  background: var(--nav-bg);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--glass-border);
   padding: 15px 0;
 }
 
@@ -239,9 +256,9 @@ body {
 /* Footer */
 .footer {
   padding: 60px 0 30px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--glass-border);
   margin-top: 60px;
-  background: rgba(15, 23, 42, 0.5);
+  background: var(--footer-bg);
 }
 
 .footer-grid {
@@ -279,7 +296,7 @@ body {
 .footer-bottom {
   text-align: center;
   padding-top: 30px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--glass-border);
   color: var(--text-muted);
 }
 
