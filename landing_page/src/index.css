@@ -135,6 +135,46 @@ body {
   border-color: var(--primary);
 }
 
+/* Spotlight Button */
+.spotlight-btn {
+  position: relative;
+  overflow: hidden;
+  border-radius: 100px;
+  background-color: var(--bg-dark);
+  border: 2px solid var(--primary);
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  cursor: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spotlight-text {
+  pointer-events: none;
+  position: relative;
+  z-index: 10;
+  mix-blend-mode: difference;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+}
+
+.spotlight-glow {
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 150px;
+  width: 150px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: white;
+}
+
 /* Canvas Container for 3D */
 .canvas-container {
   position: absolute;

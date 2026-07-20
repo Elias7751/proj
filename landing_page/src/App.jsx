@@ -87,6 +87,62 @@ const CustomCursor = () => {
   );
 };
 
+// Spotlight Button Component
+const SpotlightButton = ({ to, children }) => {
+  const btnRef = useRef(null);
+  const spanRef = useRef(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!btnRef.current || !spanRef.current) return;
+      const { width } = btnRef.current.getBoundingClientRect();
+      const offset = e.offsetX;
+      const left = `${(offset / width) * 100}%`;
+
+      spanRef.current.animate({ left }, { duration: 250, fill: "forwards" });
+    };
+
+    const handleMouseLeave = () => {
+      if (!spanRef.current) return;
+      spanRef.current.animate(
+        { left: "50%" },
+        { duration: 100, fill: "forwards" }
+      );
+    };
+
+    const btn = btnRef.current;
+    if (btn) {
+      btn.addEventListener("mousemove", handleMouseMove);
+      btn.addEventListener("mouseleave", handleMouseLeave);
+    }
+
+    return () => {
+      if (btn) {
+        btn.removeEventListener("mousemove", handleMouseMove);
+        btn.removeEventListener("mouseleave", handleMouseLeave);
+      }
+    };
+  }, []);
+
+  return (
+    <Link to={to} style={{ textDecoration: 'none' }}>
+      <motion.button
+        whileTap={{ scale: 0.985 }}
+        ref={btnRef}
+        className="spotlight-btn"
+      >
+        <span className="spotlight-text">
+          {children}
+        </span>
+        <span
+          ref={spanRef}
+          className="spotlight-glow"
+        />
+      </motion.button>
+    </Link>
+  );
+};
+
 // Navbar Component
 const Navbar = ({ theme, toggleTheme }) => {
   const [scrolled, setScrolled] = useState(false);
@@ -186,7 +242,9 @@ const Home = () => (
           <h1>مستقبل التجارة الإلكترونية <br /><span className="text-gradient">في متناول يدك</span></h1>
           <p>منصة Sellink تجمع بين أفضل المتاجر وأسرع خدمات التوصيل. سواء كنت مشترياً يبحث عن الأفضل، أو تاجراً يطمح للنمو، نحن هنا من أجلك.</p>
           <div className="hero-buttons">
-            <Link to="/customer-guide" className="btn btn-primary"><ShoppingBag size={20} /> تطبيق العميل</Link>
+            <SpotlightButton to="/customer-guide">
+              <ShoppingBag size={20} /> تطبيق العميل
+            </SpotlightButton>
             <Link to="/merchant-guide" className="btn btn-outline glass"><Store size={20} /> تطبيق التاجر</Link>
           </div>
         </motion.div>
