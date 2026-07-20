@@ -215,6 +215,45 @@ class AppSettingsScreen extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 16),
+          // حذف الحساب
+          ElevatedButton.icon(
+            onPressed: () {
+              Get.dialog(
+                AlertDialog(
+                  title: Text('حذف الحساب', style: GoogleFonts.cairo(fontWeight: FontWeight.bold, color: Colors.red)),
+                  content: Text('هل أنت متأكد أنك تريد حذف حسابك نهائياً؟ سيتم حذف جميع بياناتك ومتاجرك المرتبطة. لا يمكن التراجع عن هذا الإجراء.', style: GoogleFonts.cairo()),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Get.back(),
+                      child: Text('إلغاء', style: GoogleFonts.cairo(color: Colors.grey)),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Get.back();
+                        authController.deleteAccount();
+                      },
+                      child: Text('حذف نهائي', style: GoogleFonts.cairo(color: Colors.red)),
+                    ),
+                  ],
+                ),
+              );
+            },
+            icon: const Icon(Icons.delete_forever),
+            label: Text(
+              'حذف الحساب نهائياً',
+              style: GoogleFonts.cairo(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red.shade600,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
           const SizedBox(height: 20),
           Center(
             child: Text(

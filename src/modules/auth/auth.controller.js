@@ -119,3 +119,30 @@ exports.getMe = asyncHandler(async (req, res, next) => {
         new ApiResponse(200, user, 'تم جلب بيانات المستخدم بنجاح')
     );
 });
+
+// @desc    حذف الحساب
+// @route   DELETE /api/v1/auth/delete-account
+// @access  Private
+exports.deleteAccount = asyncHandler(async (req, res, next) => {
+    const user = await User.findByPk(req.user.id);
+    if (!user) {
+        return next(new ApiError(404, 'المستخدم غير موجود'));
+    }
+
+    // تسجيل في السجلات
+    const { logAction } = require('../auditLogs/auditLog.service');
+    await logAction({
+        userId: user.id,
+        action: 'حذف الحساب',
+        targetType: 'user',
+        targetId: user.id,
+        details: `قام المستخدم ${user.fullName} بحذف حسابه نهائياً`,
+        req
+    });
+
+    await user.destroy();
+
+    res.status(200).json(
+        new ApiResponse(200, null, 'تم حذف الحساب بنجاح')
+    );
+});

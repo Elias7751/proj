@@ -216,4 +216,21 @@ class AuthController extends GetxController {
     currentStore.value = {};
     Get.offAllNamed(Routes.LOGIN);
   }
+
+  // حذف الحساب
+  Future<void> deleteAccount() async {
+    try {
+      isLoading.value = true;
+      final response = await _apiClient.delete('/auth/delete-account');
+      
+      if (response.statusCode == 200) {
+        Get.snackbar('نجاح', 'تم حذف الحساب بنجاح');
+        await logout();
+      }
+    } catch (e) {
+      Get.snackbar('خطأ', 'حدث خطأ أثناء حذف الحساب');
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }

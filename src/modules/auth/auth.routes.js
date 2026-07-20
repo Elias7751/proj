@@ -1,5 +1,5 @@
 const express = require('express');
-const { register, login, getMe } = require('./auth.controller');
+const { register, login, getMe, deleteAccount } = require('./auth.controller');
 const { protect } = require('../../middleware/auth');
 
 const router = express.Router();
@@ -10,5 +10,6 @@ router.post('/login', login);
 
 // مسارات محمية (Protected Routes)
 router.get('/me', protect, getMe);
+router.delete('/delete-account', protect, deleteAccount);
 
 module.exports = router;

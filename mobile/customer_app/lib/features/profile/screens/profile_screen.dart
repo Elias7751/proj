@@ -112,6 +112,27 @@ class ProfileScreen extends StatelessWidget {
                   Get.toNamed(Routes.SETTINGS);
                 },
               ),
+              const SizedBox(height: 16),
+              _buildListTile(
+                icon: Icons.delete_forever,
+                title: 'حذف الحساب',
+                textColor: Colors.red,
+                iconColor: Colors.red,
+                onTap: () {
+                  Get.defaultDialog(
+                    title: 'حذف الحساب',
+                    middleText: 'هل أنت متأكد أنك تريد حذف حسابك نهائياً؟ لا يمكن التراجع عن هذا الإجراء.',
+                    textConfirm: 'حذف نهائي',
+                    textCancel: 'إلغاء',
+                    confirmTextColor: Colors.white,
+                    buttonColor: Colors.red,
+                    onConfirm: () async {
+                      Get.back();
+                      await authController.deleteAccount();
+                    },
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -123,6 +144,8 @@ class ProfileScreen extends StatelessWidget {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
+    Color? textColor,
+    Color? iconColor,
   }) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -131,12 +154,12 @@ class ProfileScreen extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: const Color(0xFF6366F1).withOpacity(0.1),
+            color: (iconColor ?? const Color(0xFF6366F1)).withOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(icon, color: const Color(0xFF6366F1)),
+          child: Icon(icon, color: iconColor ?? const Color(0xFF6366F1)),
         ),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: textColor)),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: onTap,
       ),
