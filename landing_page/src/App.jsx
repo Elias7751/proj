@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, Float, PresentationControls, ContactShadows } from '@react-three/drei';
 import { motion } from 'framer-motion';
-import { ShoppingBag, Store, Zap, Shield, Smartphone, ArrowLeft, CheckCircle, MapPin, CreditCard, Bell, Sun, Moon } from 'lucide-react';
+import { ShoppingBag, Store, Zap, Shield, Smartphone, ArrowLeft, CheckCircle, MapPin, CreditCard, Bell, Sun, Moon, Wifi, BatteryCharging } from 'lucide-react';
 import axios from 'axios';
 import './index.css';
 
@@ -143,6 +143,34 @@ const SpotlightButton = ({ to, children }) => {
   );
 };
 
+// Floating Phone Component
+const FloatingPhone = () => {
+  return (
+    <div className="floating-phone-container">
+      <motion.div
+        initial={{ transform: "translateZ(8px) translateY(-2px)" }}
+        animate={{ transform: "translateZ(32px) translateY(-8px)" }}
+        transition={{ repeat: Infinity, repeatType: "mirror", duration: 2, ease: "easeInOut" }}
+        className="floating-phone-body"
+      >
+        <div className="phone-header-bar"></div>
+        <div className="phone-header-icons">
+          <Wifi size={14} />
+          <BatteryCharging size={14} />
+        </div>
+
+        <div className="phone-screen">
+          <h2 style={{ color: 'var(--primary)', fontSize: '2rem', fontWeight: 'bold', zIndex: 10 }}>Sellink</h2>
+          <button className="phone-screen-btn">
+            تسوق الآن
+          </button>
+          <div className="phone-screen-bg" />
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 // Navbar Component
 const Navbar = ({ theme, toggleTheme }) => {
   const [scrolled, setScrolled] = useState(false);
@@ -237,7 +265,7 @@ const Home = () => (
     </div>
 
     <section className="hero">
-      <div className="container">
+      <div className="container" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap-reverse', gap: '40px' }}>
         <motion.div className="hero-content" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
           <h1>مستقبل التجارة الإلكترونية <br /><span className="text-gradient">في متناول يدك</span></h1>
           <p>منصة Sellink تجمع بين أفضل المتاجر وأسرع خدمات التوصيل. سواء كنت مشترياً يبحث عن الأفضل، أو تاجراً يطمح للنمو، نحن هنا من أجلك.</p>
@@ -247,6 +275,10 @@ const Home = () => (
             </SpotlightButton>
             <Link to="/merchant-guide" className="btn btn-outline glass"><Store size={20} /> تطبيق التاجر</Link>
           </div>
+        </motion.div>
+
+        <motion.div className="hero-visual" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}>
+          <FloatingPhone />
         </motion.div>
       </div>
     </section>

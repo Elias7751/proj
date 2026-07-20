@@ -175,6 +175,95 @@ body {
   background-color: white;
 }
 
+/* Floating Phone */
+.floating-phone-container {
+  transform-style: preserve-3d;
+  transform: rotateY(-30deg) rotateX(15deg);
+  border-radius: 24px;
+  background-color: var(--primary);
+  width: 224px;
+  height: 384px;
+  margin: 0 auto;
+}
+
+.floating-phone-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  border: 2px solid white;
+  border-bottom-width: 4px;
+  border-right-width: 4px;
+  border-left-color: #e5e5e5;
+  border-top-color: #e5e5e5;
+  background-color: #171717;
+  padding: 4px;
+  padding-left: 3px;
+  padding-top: 3px;
+}
+
+.phone-header-bar {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  z-index: 10;
+  height: 8px;
+  width: 64px;
+  transform: translateX(-50%);
+  border-radius: 6px;
+  background-color: #171717;
+}
+
+.phone-header-icons {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+  color: #525252;
+}
+
+.phone-screen {
+  position: relative;
+  z-index: 0;
+  display: grid;
+  height: 100%;
+  width: 100%;
+  place-content: center;
+  overflow: hidden;
+  border-radius: 20px;
+  background-color: white;
+}
+
+.phone-screen-bg {
+  position: absolute;
+  bottom: -288px;
+  left: 50%;
+  height: 384px;
+  width: 384px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background-color: var(--primary);
+}
+
+.phone-screen-btn {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 10;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary);
+  backdrop-filter: blur(4px);
+  cursor: none;
+}
+
 /* Canvas Container for 3D */
 .canvas-container {
   position: absolute;
@@ -197,7 +286,16 @@ body {
 }
 
 .hero-content {
+  flex: 1;
   max-width: 600px;
+  z-index: 10;
+}
+
+.hero-visual {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 10;
 }
 
