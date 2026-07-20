@@ -87,7 +87,7 @@ const Footer = () => (
           <h3>قانوني</h3>
           <ul>
             <li><Link to="/privacy-policy">سياسة الخصوصية</Link></li>
-            <li><a href="#">الشروط والأحكام</a></li>
+            <li><Link to="/terms-conditions">الشروط والأحكام</Link></li>
           </ul>
         </div>
         <div className="footer-col">
@@ -244,6 +244,35 @@ const PrivacyPolicy = () => (
   </div>
 );
 
+// Terms and Conditions Page
+const TermsConditions = () => (
+  <div className="page-container">
+    <div className="container">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="page-header">
+        <h1>الشروط <span className="text-gradient">والأحكام</span></h1>
+        <p>آخر تحديث: 20 يوليو 2026</p>
+      </motion.div>
+
+      <div className="policy-content glass">
+        <h2>1. قبول الشروط</h2>
+        <p>باستخدامك لمنصة وتطبيقات Sellink، فإنك توافق على الالتزام بجميع الشروط والأحكام المذكورة هنا. إذا كنت لا توافق على أي جزء منها، يرجى عدم استخدام المنصة.</p>
+
+        <h2>2. حساب المستخدم</h2>
+        <p>أنت مسؤول عن الحفاظ على سرية معلومات حسابك وكلمة المرور. المنصة غير مسؤولة عن أي خسارة ناتجة عن فشلك في حماية بيانات الدخول الخاصة بك.</p>
+
+        <h2>3. التزامات التاجر</h2>
+        <p>يجب على التجار تقديم معلومات دقيقة عن المنتجات والأسعار. يمنع منعاً باتاً بيع أي منتجات غير قانونية أو مقلدة. يحق لإدارة المنصة إيقاف أي متجر يخالف هذه الشروط.</p>
+
+        <h2>4. سياسة الإرجاع والاسترداد</h2>
+        <p>تخضع سياسة الإرجاع لشروط كل متجر على حدة. المنصة تعمل كوسيط بين العميل والتاجر، وتلتزم بتقديم الدعم لحل أي نزاعات قد تنشأ بين الطرفين.</p>
+
+        <h2>5. التعديلات</h2>
+        <p>نحتفظ بالحق في تعديل هذه الشروط في أي وقت. سيتم إشعار المستخدمين بأي تغييرات جوهرية، واستمرارك في استخدام المنصة يعني قبولك للشروط المعدلة.</p>
+      </div>
+    </div>
+  </div>
+);
+
 // Main App Component
 function App() {
   return (
@@ -256,6 +285,7 @@ function App() {
             <Route path="/customer-guide" element={<CustomerGuide />} />
             <Route path="/merchant-guide" element={<MerchantGuide />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-conditions" element={<TermsConditions />} />
           </Routes>
         </main>
         <Footer />
