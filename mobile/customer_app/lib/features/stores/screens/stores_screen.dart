@@ -172,8 +172,9 @@ class StoresScreen extends StatelessWidget {
               ),
             );
           },
-        );
-      }),
+        ),
+      );
+    }),
     );
   }
 }

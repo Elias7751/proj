@@ -33,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          await authController.checkAuth();
+          await authController.checkLoginStatus();
         },
         color: const Color(0xFF6366F1),
         child: SingleChildScrollView(
