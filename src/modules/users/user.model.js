@@ -66,6 +66,10 @@ const User = sequelize.define('User', {
     isPhoneVerified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    fcmToken: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     hooks: {

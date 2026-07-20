@@ -146,3 +146,26 @@ exports.deleteAccount = asyncHandler(async (req, res, next) => {
         new ApiResponse(200, null, 'تم حذف الحساب بنجاح')
     );
 });
+
+// @desc    تحديث توكن الإشعارات
+// @route   PUT /api/v1/auth/update-fcm-token
+// @access  Private
+exports.updateFcmToken = asyncHandler(async (req, res, next) => {
+    const { fcmToken } = req.body;
+
+    if (!fcmToken) {
+        return next(new ApiError(400, 'يرجى توفير توكن الإشعارات'));
+    }
+
+    const user = await User.findByPk(req.user.id);
+    if (!user) {
+        return next(new ApiError(404, 'المستخدم غير موجود'));
+    }
+
+    user.fcmToken = fcmToken;
+    await user.save();
+
+    res.status(200).json(
+        new ApiResponse(200, null, 'تم تحديث توكن الإشعارات بنجاح')
+    );
+});
