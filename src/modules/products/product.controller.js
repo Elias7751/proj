@@ -7,6 +7,7 @@ const SubscriptionPlan = require('../subscriptions/plan.model');
 const ApiError = require('../../utils/ApiError');
 const ApiResponse = require('../../utils/ApiResponse');
 const asyncHandler = require('../../utils/asyncHandler');
+const { clearCache } = require('../../middleware/cache');
 
 // @desc    إضافة منتج جديد
 // @route   POST /api/v1/stores/:storeId/products
@@ -116,6 +117,9 @@ exports.createProduct = asyncHandler(async (req, res, next) => {
     const productWithVariants = await Product.findByPk(product.id, {
         include: [{ model: ProductVariant, as: 'variants' }]
     });
+
+    // مسح الكاش لأن البيانات تغيرت
+    await clearCache('cache:/api/v1/products*');
 
     res.status(201).json(new ApiResponse(201, productWithVariants, 'تم إضافة المنتج بنجاح'));
 });
@@ -235,6 +239,9 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
         include: [{ model: ProductVariant, as: 'variants' }]
     });
 
+    // مسح الكاش
+    await clearCache('cache:/api/v1/products*');
+
     res.status(200).json(new ApiResponse(200, productWithVariants, 'تم تحديث المنتج بنجاح'));
 });
 
@@ -257,6 +264,10 @@ exports.deleteProduct = asyncHandler(async (req, res, next) => {
     }
 
     await product.destroy();
+
+    // مسح الكاش
+    await clearCache('cache:/api/v1/products*');
+
     res.status(200).json(new ApiResponse(200, null, 'تم حذف المنتج بنجاح'));
 });
 
