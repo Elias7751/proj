@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button, Paper, Tabs, Tab, CircularProgress } from '@mui/material';
 import { Save } from 'lucide-react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import api from '../api/axios';
 
 const LegalSettings = () => {
     const [tabIndex, setTabIndex] = useState(0);
@@ -22,7 +20,7 @@ const LegalSettings = () => {
 
     const fetchSettings = async () => {
         try {
-            const res = await axios.get('https://shop-tcqs.onrender.com/api/v1/settings');
+            const res = await api.get('/settings');
             const data = res.data.data;
             setSettings({
                 privacy_policy: data.privacy_policy || '',
@@ -32,7 +30,7 @@ const LegalSettings = () => {
             });
         } catch (error) {
             console.error('Error fetching settings:', error);
-            toast.error('فشل في تحميل الإعدادات');
+            alert('فشل في تحميل الإعدادات');
         } finally {
             setLoading(false);
         }
@@ -41,14 +39,11 @@ const LegalSettings = () => {
     const handleSave = async () => {
         setSaving(true);
         try {
-            const token = localStorage.getItem('token');
-            await axios.put('https://shop-tcqs.onrender.com/api/v1/settings', settings, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            toast.success('تم حفظ الإعدادات بنجاح');
+            await api.put('/settings', settings);
+            alert('تم حفظ الإعدادات بنجاح');
         } catch (error) {
             console.error('Error saving settings:', error);
-            toast.error('فشل في حفظ الإعدادات');
+            alert('فشل في حفظ الإعدادات');
         } finally {
             setSaving(false);
         }
@@ -59,80 +54,79 @@ const LegalSettings = () => {
     };
 
     if (loading) {
-        return <Box display="flex" justifyContent="center" p={5}><CircularProgress /></Box>;
+        return <div style={{ padding: '32px', textAlign: 'center' }}>جاري التحميل...</div>;
     }
 
+    const tabs = [
+        { id: 0, label: 'سياسة الخصوصية', key: 'privacy_policy' },
+        { id: 1, label: 'الشروط والأحكام', key: 'terms_conditions' },
+        { id: 2, label: 'دليل العميل', key: 'customer_guide' },
+        { id: 3, label: 'دليل التاجر', key: 'merchant_guide' }
+    ];
+
     return (
-        <Box>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-                <Typography variant="h4" fontWeight="bold">
-                    إعدادات الصفحات القانونية والأدلة
-                </Typography>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<Save size={20} />}
+        <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+                <h1>إعدادات الصفحات القانونية والأدلة</h1>
+                <button
+                    className="btn btn-primary"
                     onClick={handleSave}
                     disabled={saving}
+                    style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
                 >
+                    <Save size={20} />
                     {saving ? 'جاري الحفظ...' : 'حفظ التغييرات'}
-                </Button>
-            </Box>
+                </button>
+            </div>
 
-            <Paper sx={{ width: '100%', mb: 2 }}>
-                <Tabs
-                    value={tabIndex}
-                    onChange={(e, newValue) => setTabIndex(newValue)}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    variant="fullWidth"
-                >
-                    <Tab label="سياسة الخصوصية" />
-                    <Tab label="الشروط والأحكام" />
-                    <Tab label="دليل العميل" />
-                    <Tab label="دليل التاجر" />
-                </Tabs>
-            </Paper>
+            <div className="glass-card" style={{ marginBottom: '24px', padding: 0, overflow: 'hidden' }}>
+                <div style={{ display: 'flex', borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
+                    {tabs.map((tab) => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setTabIndex(tab.id)}
+                            style={{
+                                flex: 1,
+                                padding: '16px',
+                                background: tabIndex === tab.id ? 'rgba(79, 70, 229, 0.1)' : 'transparent',
+                                color: tabIndex === tab.id ? 'var(--primary-color)' : 'var(--text-color)',
+                                border: 'none',
+                                borderBottom: tabIndex === tab.id ? '2px solid var(--primary-color)' : '2px solid transparent',
+                                cursor: 'pointer',
+                                fontWeight: tabIndex === tab.id ? 'bold' : 'normal',
+                                transition: 'all 0.3s ease'
+                            }}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
+                </div>
+            </div>
 
-            <Paper sx={{ p: 3, minHeight: '500px' }}>
-                <Typography variant="body2" color="textSecondary" mb={2}>
+            <div className="glass-card" style={{ minHeight: '500px' }}>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '16px', fontSize: '14px' }}>
                     ملاحظة: يمكنك استخدام أكواد HTML لتنسيق النص (مثل &lt;h2&gt; للعناوين، &lt;p&gt; للفقرات، &lt;b&gt; للخط العريض).
-                </Typography>
+                </p>
 
-                {tabIndex === 0 && (
-                    <textarea
-                        style={{ width: '100%', height: '400px', padding: '15px', fontFamily: 'monospace', fontSize: '14px', borderRadius: '8px', border: '1px solid #ccc' }}
-                        value={settings.privacy_policy}
-                        onChange={(e) => handleChange('privacy_policy', e.target.value)}
-                        placeholder="أدخل نص سياسة الخصوصية هنا (يدعم HTML)..."
-                    />
-                )}
-                {tabIndex === 1 && (
-                    <textarea
-                        style={{ width: '100%', height: '400px', padding: '15px', fontFamily: 'monospace', fontSize: '14px', borderRadius: '8px', border: '1px solid #ccc' }}
-                        value={settings.terms_conditions}
-                        onChange={(e) => handleChange('terms_conditions', e.target.value)}
-                        placeholder="أدخل نص الشروط والأحكام هنا (يدعم HTML)..."
-                    />
-                )}
-                {tabIndex === 2 && (
-                    <textarea
-                        style={{ width: '100%', height: '400px', padding: '15px', fontFamily: 'monospace', fontSize: '14px', borderRadius: '8px', border: '1px solid #ccc' }}
-                        value={settings.customer_guide}
-                        onChange={(e) => handleChange('customer_guide', e.target.value)}
-                        placeholder="أدخل نص دليل العميل هنا (يدعم HTML)..."
-                    />
-                )}
-                {tabIndex === 3 && (
-                    <textarea
-                        style={{ width: '100%', height: '400px', padding: '15px', fontFamily: 'monospace', fontSize: '14px', borderRadius: '8px', border: '1px solid #ccc' }}
-                        value={settings.merchant_guide}
-                        onChange={(e) => handleChange('merchant_guide', e.target.value)}
-                        placeholder="أدخل نص دليل التاجر هنا (يدعم HTML)..."
-                    />
-                )}
-            </Paper>
-        </Box>
+                <textarea
+                    style={{
+                        width: '100%',
+                        height: '400px',
+                        padding: '16px',
+                        fontFamily: 'monospace',
+                        fontSize: '14px',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(0,0,0,0.1)',
+                        background: 'var(--bg-color)',
+                        color: 'var(--text-color)',
+                        resize: 'vertical'
+                    }}
+                    value={settings[tabs[tabIndex].key]}
+                    onChange={(e) => handleChange(tabs[tabIndex].key, e.target.value)}
+                    placeholder={`أدخل نص ${tabs[tabIndex].label} هنا (يدعم HTML)...`}
+                />
+            </div>
+        </div>
     );
 };
 
