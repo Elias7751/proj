@@ -59,8 +59,6 @@
 
 لإعطاء فكرة واضحة عن شكل وتصميم المنصة، تم تنظيم لقطات الشاشة (Screenshots) الخاصة بكل جزء من أجزاء النظام أدناه.
 
-> 💡 **ملاحظة للمطور**: يمكنك استبدال روابط الصور المؤقتة أدناه بلقطات الشاشة الفعلية بعد رفعها في مجلد `screenshots/` في مستودع GitHub الخاص بك.
-
 ### 🌐 الصفحة التعريفية ولوحة تحكم الإدارة (Landing Page & Admin Dashboard)
 
 | الصفحة التعريفية (Landing Page) | لوحة تحكم الإدارة (Admin Dashboard) |
@@ -72,18 +70,6 @@
 | تطبيق العملاء (Customer App) | تطبيق التجار (Merchant App) |
 | :---: | :---: |
 | <img src="./screenshots/customer_app.png" width="220" alt="Customer App Showcase"/> <br> *تصفح المتاجر، المنتجات، وإجراء الطلبات* | <img src="./screenshots/merchant_app.png" width="220" alt="Merchant App Showcase"/> <br> *إدارة المنتجات، الطلبات، والإحصائيات* |
-
----
-
-### 📂 كيفية إضافة الصور الخاصة بك إلى GitHub:
-1. قم بإنشاء مجلد باسم `screenshots` في المجلد الرئيسي للمشروع.
-2. التقط صوراً لواجهات التطبيق واللوحة وقم بتسميتها كالتالي:
-   - `landing_page.png`
-   - `admin_dashboard.png`
-   - `customer_app.png`
-   - `merchant_app.png`
-3. ضع الصور داخل مجلد `screenshots`.
-4. قم بعمل `git add .` ثم `git commit` و `git push` لتظهر الصور تلقائياً في ملف الـ README على GitHub.
 
 ---
 
