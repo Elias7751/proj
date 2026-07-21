@@ -8,6 +8,17 @@ logs/
 *.log
 admin_panel/node_modules/
 admin_panel/dist/
+landing_page/node_modules/
+landing_page/dist/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # Flutter
 build/
