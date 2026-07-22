@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Store, Users, Settings, LogOut, CreditCard, ShoppingBag, Package, Bell, Shield, FileText, Activity, Star, Image, ListTree, MapPin } from 'lucide-react';
+import { LayoutDashboard, Store, Users, Settings, LogOut, CreditCard, ShoppingBag, Package, Bell, Shield, FileText, Activity, Star, Image, ListTree, MapPin, MessageCircle } from 'lucide-react';
 
 const Sidebar = ({ onLogout }) => {
     return (

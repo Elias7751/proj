@@ -18,6 +18,7 @@ import FeaturedStores from './pages/FeaturedStores';
 import Banners from './pages/Banners';
 import Categories from './pages/Categories';
 import Cities from './pages/Cities';
+import Tickets from './pages/Tickets';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('adminToken'));
@@ -57,6 +58,7 @@ function App() {
             <Route path="/admins" element={<Admins />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/legal-settings" element={<LegalSettings />} />
+            <Route path="/tickets" element={<Tickets />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
