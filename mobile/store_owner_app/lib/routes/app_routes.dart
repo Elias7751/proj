@@ -17,4 +17,7 @@ abstract class Routes {
   static const PENDING_APPROVAL = '/pending-approval';
   static const NOTIFICATIONS = '/notifications';
   static const APP_SETTINGS = '/app-settings';
+  static const SUPPORT = '/support';
+  static const CREATE_TICKET = '/create-ticket';
+  static const TICKET_DETAILS = '/ticket-details';
 }

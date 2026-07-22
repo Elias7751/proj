@@ -15,6 +15,9 @@ import '../features/main/screens/main_screen.dart';
 import '../features/offers_ads/screens/offers_screen.dart';
 import '../features/notifications/screens/notifications_screen.dart';
 import '../features/splash/screens/splash_screen.dart';
+import '../features/support/screens/support_screen.dart';
+import '../features/support/screens/create_ticket_screen.dart';
+import '../features/support/screens/ticket_details_screen.dart';
 
 part 'app_routes.dart';
 
@@ -50,5 +53,8 @@ class AppPages {
     GetPage(name: Routes.PENDING_APPROVAL, page: () => const PendingApprovalScreen()),
     GetPage(name: Routes.NOTIFICATIONS, page: () => const NotificationsScreen()),
     GetPage(name: Routes.APP_SETTINGS, page: () => const AppSettingsScreen()),
+    GetPage(name: Routes.SUPPORT, page: () => const SupportScreen()),
+    GetPage(name: Routes.CREATE_TICKET, page: () => const CreateTicketScreen()),
+    GetPage(name: Routes.TICKET_DETAILS, page: () => const TicketDetailsScreen()),
   ];
 }
