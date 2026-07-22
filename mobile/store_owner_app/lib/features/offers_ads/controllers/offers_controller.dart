@@ -27,7 +27,7 @@ class OffersController extends GetxController {
 
   Future<void> fetchCoupons() async {
     try {
-      final response = await _apiClient.get('/offers/coupons/my-coupons');
+      final response = await _apiClient.get('/coupons/store');
       if (response.statusCode == 200) {
         var responseData = response.data;
         if (responseData is String) {
@@ -58,7 +58,7 @@ class OffersController extends GetxController {
   Future<void> createCoupon(Map<String, dynamic> data) async {
     try {
       isLoading.value = true;
-      final response = await _apiClient.post('/offers/coupons', data: data);
+      final response = await _apiClient.post('/coupons/store', data: data);
       if (response.statusCode == 201) {
         Get.snackbar('نجاح', 'تم إنشاء الكوبون بنجاح');
         await fetchCoupons();
@@ -86,7 +86,7 @@ class OffersController extends GetxController {
   Future<void> updateCoupon(String id, Map<String, dynamic> data) async {
     try {
       isLoading.value = true;
-      final response = await _apiClient.put('/offers/coupons/$id', data: data);
+      final response = await _apiClient.put('/coupons/store/$id', data: data);
       if (response.statusCode == 200) {
         Get.snackbar('نجاح', 'تم تحديث الكوبون بنجاح');
         await fetchCoupons();
@@ -114,7 +114,7 @@ class OffersController extends GetxController {
   Future<void> deleteCoupon(String id) async {
     try {
       isLoading.value = true;
-      final response = await _apiClient.delete('/offers/coupons/$id');
+      final response = await _apiClient.delete('/coupons/store/$id');
       if (response.statusCode == 200) {
         Get.snackbar('نجاح', 'تم حذف الكوبون بنجاح');
         await fetchCoupons();
