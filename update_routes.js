@@ -1,15 +1,15 @@
 const fs = require('fs');
-let code = fs.readFileSync('src/modules/support/support.routes.js', 'utf8');
+let code = fs.readFileSync('src/routes.js', 'utf8');
 
 code = code.replace(
-    'createFAQ\n} = require(',
-    'createFAQ,\n    getAllTickets,\n    updateTicketStatus\n} = require('
+    "const subscriptionRoutes = require('./modules/subscriptions/subscription.routes');",
+    "const subscriptionRoutes = require('./modules/subscriptions/subscription.routes');\nconst couponRoutes = require('./modules/coupons/coupon.routes');"
 );
 
 code = code.replace(
-    "router.route('/tickets')\n    .post(protect, createTicket)\n    .get(protect, getMyTickets);",
-    "router.route('/tickets')\n    .post(protect, createTicket)\n    .get(protect, getMyTickets);\n\nrouter.route('/tickets/all')\n    .get(protect, authorize('admin'), getAllTickets);\n\nrouter.route('/tickets/:id/status')\n    .put(protect, authorize('admin'), updateTicketStatus);"
+    "router.use('/subscriptions', subscriptionRoutes);",
+    "router.use('/subscriptions', subscriptionRoutes);\nrouter.use('/coupons', couponRoutes);"
 );
 
-fs.writeFileSync('src/modules/support/support.routes.js', code);
-console.log('Updated routes');
+fs.writeFileSync('src/routes.js', code);
+console.log('Updated routes.js');

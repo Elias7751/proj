@@ -5,7 +5,7 @@ const CartItem = require('./cartItem.model');
 const Product = require('../products/product.model');
 const ProductVariant = require('../products/variant.model');
 const Store = require('../stores/store.model');
-const Coupon = require('../offers/coupon.model');
+const Coupon = require('../coupons/coupon.model');
 const ApiError = require('../../utils/ApiError');
 const ApiResponse = require('../../utils/ApiResponse');
 const asyncHandler = require('../../utils/asyncHandler');
@@ -51,7 +51,7 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
     // التحقق من الكوبون وتطبيقه
     if (couponCode) {
         const coupon = await Coupon.findOne({
-            where: { code: couponCode.toUpperCase(), status: 'active' }
+            where: { code: couponCode.toUpperCase(), isActive: true }
         });
 
         if (!coupon) {
@@ -70,7 +70,7 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
         }
 
         // التحقق من حد الاستخدام
-        if (coupon.usageLimit !== null && coupon.usageCount >= coupon.usageLimit) {
+        if (coupon.usageLimit !== null && coupon.usedCount >= coupon.usageLimit) {
             return next(new ApiError(400, 'تم تجاوز حد استخدام هذا الكوبون'));
         }
 
@@ -84,13 +84,13 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
             discount = parseFloat(coupon.discountValue);
         } else if (coupon.discountType === 'percentage') {
             discount = (parseFloat(cart.subTotal) * parseFloat(coupon.discountValue)) / 100;
-            if (coupon.maxDiscount && discount > parseFloat(coupon.maxDiscount)) {
-                discount = parseFloat(coupon.maxDiscount);
+            if (coupon.maxDiscountAmount && discount > parseFloat(coupon.maxDiscountAmount)) {
+                discount = parseFloat(coupon.maxDiscountAmount);
             }
         }
 
         // زيادة عدد مرات استخدام الكوبون
-        await coupon.increment('usageCount');
+        await coupon.increment('usedCount');
     }
 
     const totalAmount = parseFloat(cart.subTotal) + deliveryFee - discount;

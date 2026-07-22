@@ -15,6 +15,7 @@ const supportRoutes = require('./modules/support/support.routes');
 const adminRoutes = require('./modules/admin/admin.routes');
 const favoriteRoutes = require('./modules/favorites/favorite.routes');
 const subscriptionRoutes = require('./modules/subscriptions/subscription.routes');
+const couponRoutes = require('./modules/coupons/coupon.routes');
 
 const router = express.Router();
 
@@ -35,5 +36,6 @@ router.use('/support', supportRoutes);
 router.use('/admin', adminRoutes);
 router.use('/favorites', favoriteRoutes);
 router.use('/subscriptions', subscriptionRoutes);
+router.use('/coupons', couponRoutes);
 
 module.exports = router;

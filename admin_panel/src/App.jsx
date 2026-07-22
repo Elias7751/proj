@@ -20,6 +20,7 @@ import Categories from './pages/Categories';
 import Cities from './pages/Cities';
 import Tickets from './pages/Tickets';
 import Reviews from './pages/Reviews';
+import Coupons from './pages/Coupons';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('adminToken'));
@@ -61,6 +62,7 @@ function App() {
             <Route path="/legal-settings" element={<LegalSettings />} />
             <Route path="/tickets" element={<Tickets />} />
             <Route path="/reviews" element={<Reviews />} />
+            <Route path="/coupons" element={<Coupons />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

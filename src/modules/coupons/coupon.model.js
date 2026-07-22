@@ -8,14 +8,6 @@ const Coupon = sequelize.define('Coupon', {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
-    storeId: {
-        type: DataTypes.UUID,
-        allowNull: true, // إذا كان null، فهذا يعني أنه كوبون عام للمنصة (Admin)
-        references: {
-            model: 'stores',
-            key: 'id'
-        }
-    },
     code: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -23,42 +15,59 @@ const Coupon = sequelize.define('Coupon', {
     },
     discountType: {
         type: DataTypes.ENUM('percentage', 'fixed'),
+        allowNull: false,
         defaultValue: 'percentage'
     },
     discountValue: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
     },
-    maxDiscount: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: true // الحد الأقصى للخصم في حال كان نسبة مئوية
-    },
     minOrderAmount: {
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: 0.00
     },
+    maxDiscountAmount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true // Only applicable for percentage
+    },
     startDate: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: DataTypes.NOW
     },
     endDate: {
         type: DataTypes.DATE,
-        allowNull: false
-    },
-    usageLimit: {
-        type: DataTypes.INTEGER, // إجمالي عدد مرات الاستخدام المسموحة
         allowNull: true
     },
-    usageCount: {
-        type: DataTypes.INTEGER, // عدد مرات الاستخدام الفعلية
+    usageLimit: {
+        type: DataTypes.INTEGER,
+        allowNull: true // null means unlimited
+    },
+    usedCount: {
+        type: DataTypes.INTEGER,
         defaultValue: 0
     },
-    status: {
-        type: DataTypes.ENUM('active', 'expired', 'disabled'),
-        defaultValue: 'active'
+    isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
+    storeId: {
+        type: DataTypes.UUID,
+        allowNull: true, // If null, it's a global platform coupon
+        references: {
+            model: 'stores',
+            key: 'id'
+        }
     }
 }, {
-    tableName: 'coupons'
+    tableName: 'coupons',
+    hooks: {
+        beforeValidate: (coupon) => {
+            if (coupon.code) {
+                coupon.code = coupon.code.toUpperCase().trim();
+            }
+        }
+    }
 });
 
 // العلاقات
